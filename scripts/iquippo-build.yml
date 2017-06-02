@@ -12,7 +12,7 @@
     - git: 
         repo: http://atul:Atul9911@199.217.116.19/iquippo/iquippo.com.git
         dest: /home/atul/Workplace/test-ansible
-        version: */{{GIT_TAG}}
+        version: {{GIT_TAG}}
         refspec: '+refs/tags/{{GIT_TAG}}:refs/remotes/origin/tags/{{GIT_TAG}}'
         update: no
         register: cloned 
