@@ -1,14 +1,23 @@
 ---
 # - name: 'iquippo-build-creation'
-- hosts: {{HOST}}
+- hosts: {{HOST}} 
+  become: true
+  become_user: {{sudo}}
+  become_method: sudo
   gather_facts: true
   tasks:
+    - name: create /home/ubuntu/ansible directory
+      file: dest=/home/ubuntu/ansible state=directory owner=ubuntu group=ubuntu mode=0700
+
     - git: 
         repo: http://atul:Atul9911@199.217.116.19/iquippo/iquippo.com.git
         dest: /home/atul/Workplace/test-ansible
-        version: */tags/{{GIT_TAG}}
+        version: */{{GIT_TAG}}
         refspec: '+refs/tags/{{GIT_TAG}}:refs/remotes/origin/tags/{{GIT_TAG}}'
-        update : no
+        update: no
+        register: cloned 
+    - debug: msg="{{ cloned.stdout }}"
+    - debug: msg="{{ cloned.stderr }}"
         
         
   
