@@ -1,0 +1,14 @@
+---
+# - name: 'iquippo-build-creation'
+- hosts: localhost
+  gather_facts: true
+  tasks:
+    - git: 
+        repo: http://atul:Atul9911@199.217.116.19/iquippo/iquippo.com.git
+        dest: /home/atul/Workplace/test-ansible
+        version: production
+        refspec: '+refs/heads/*:refs/remotes/origin/*'
+        update : no
+        
+        
+  
