@@ -11,16 +11,16 @@
     server_file: ecosystem.config.js
   tasks:
     - stat:
-        path: {{ app_path }}
+        path: "{{ app_path }}"
       register: exist
 
-    - name: create {{ app_path }} directory
+    - name: create "{{ app_path }}" directory
       file: dest={{ app_path }} state=directory owner=atul group=atul mode=0700
       when: exist.stat.exists != True
 
     - git: 
         repo: http://atul:Atul9911@199.217.116.19/iquippo/iquippo.com.git
-        dest: {{ app_path }}/{{ app_dir }}
+        dest: "{{ app_path }}"/{{ app_dir }}
         version: "{{ GIT_TAG }}"
         refspec: '+refs/heads/{{ GIT_TAG }}:refs/remotes/origin/{{ GIT_TAG }}'
         update: no
