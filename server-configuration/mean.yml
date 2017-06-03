@@ -1,0 +1,21 @@
+---
+  - hosts: {{ HOST }}
+  - vars:
+      node_source: https://rpm.nodesource.com/setup
+      mongo_x86_64_3.0_repo: http://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.0/x86_64/
+
+  - name: Install Node Source
+    command: curl -sL {{node_source}} | bash -
+    command: yum install -y nodejs npm
+
+  - name: Init Repo
+    template: src=mongodb.repo.j2 dest=/etc/yum.repos.d/mongodb.repo
+
+  - name: Install mongodb
+    command: yum -y install mongodb-org
+
+  - name: Start mongodb
+    command: systemctl enable mongod
+    command: systemctl start mongod
+
+  
