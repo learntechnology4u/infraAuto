@@ -33,19 +33,19 @@
     - name: Execute the npm install 
       command: npm install
       args:
-        chdir: {{ app_path }}/{{ app_dir }} 
+        chdir: "{{ app_path }}"/"{{ app_dir }}" 
       register: npm_install
 
     - name: Execute the bower install 
       command: bower install
       args:
-        chdir: {{ app_path }}/{{ app_dir }} 
+        chdir: "{{ app_path }}"/"{{ app_dir }}" 
       register: bower_install
 
     - name: Create the build 
       command: grunt build
       args:
-        chdir: {{ app_path }}/{{ app_dir }} 
+        chdir: "{{ app_path }}"/"{{ app_dir }}" 
       register: bower_install
 
     - name: PM2 | Install PM2 
