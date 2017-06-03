@@ -5,10 +5,10 @@
   become_user: atul
   become_method: sudo
   gather_facts: true
-  - vars:
-      app_path: /home/atul/ansible
-      app_dir: iquippo.com 
-      server_file: ecosystem.config.js
+  vars:
+    app_path: /home/atul/ansible
+    app_dir: iquippo.com 
+    server_file: ecosystem.config.js
   tasks:
     - stat:
         path: {{ app_path }}
