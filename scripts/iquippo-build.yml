@@ -1,6 +1,6 @@
 ---
 # - name: 'iquippo-build-creation'
-- hosts : "{{ HOST }}"
+- hosts: "{{ HOST }}"
   become: true
   become_user: atul
   become_method: sudo
