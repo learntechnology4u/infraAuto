@@ -20,7 +20,7 @@
 
     - git: 
         repo: http://atul:Atul9911@199.217.116.19/iquippo/iquippo.com.git
-        dest: "{{ app_path }}"/{{ app_dir }}
+        dest: "{{ app_path }}"/"{{ app_dir }}""
         version: "{{ GIT_TAG }}"
         refspec: '+refs/heads/{{ GIT_TAG }}:refs/remotes/origin/{{ GIT_TAG }}'
         update: no
@@ -54,13 +54,13 @@
       tags: pm2
 
     - name: start application with pm2 
-      command: pm2 start {{ app_path }}/{{ app_dir }}/{{ server_file }} 
+      command: pm2 start "{{ app_path }}"/"{{ app_dir }}"/"{{ server_file }}" 
       ignore_errors: yes 
       become: yes 
       tags: pm2  
 
     - name: Print complete log list
-      command: git log --pretty=oneline {{ cloned.msg.after }}..{{ cloned.msg.before }}
+      command: git log --pretty=oneline "{{ cloned.msg.after }}".."{{ cloned.msg.before }}"
       register: commits_list   
     
 
