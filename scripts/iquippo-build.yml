@@ -8,7 +8,7 @@
   vars:
     app_path: /home/varanet/ansible
     app_dir: iquippo.com 
-    server_file: server/ecosystem.config.js
+    server_dir: server
   
   tasks:
     - stat:
@@ -76,9 +76,9 @@
       register: npm_install
 
     - name: start application with pm2 
-      command: "/home/varanet/.nvm/versions/node/v0.12.7/bin/pm2 start {{ server_file }}"
+      command: "/home/varanet/.nvm/versions/node/v0.12.7/bin/pm2 start ecosystem.config.js"
       args:
-        chdir: "{{ app_path }}/{{ app_dir }}" 
+        chdir: "{{ app_path }}/{{ app_dir }}/{{ server_dir }}" 
       register: start_application
 
     - name: Print complete log list
