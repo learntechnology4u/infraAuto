@@ -15,7 +15,7 @@
       register: exist
 
     - name: create "{{ app_path }}" directory
-      file: dest={{ app_path }} state=directory owner=atul group=atul mode=0700
+      file: dest={{ app_path }} state=directory owner=varanet group=varanet mode=0700
       when: exist.stat.exists != True
 
     - git: 
