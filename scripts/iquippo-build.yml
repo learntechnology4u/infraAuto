@@ -4,6 +4,7 @@
   become: true
   become_user: varanet
   gather_facts: true
+  sudo: {{ require_sudo }}
   vars:
     app_path: /home/varanet/ansible
     app_dir: iquippo.com 
