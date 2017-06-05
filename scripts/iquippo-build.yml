@@ -46,16 +46,16 @@
     #    name: grunt
     #    global: no
 
-    - name: Install packages based on bower.json in  "{{ app_path }}/{{ app_dir }}" 
-      bower:
-        path: "{{ app_path }}/{{ app_dir }}"
-      register: bower_install
+    #- name: Install packages based on bower.json in  "{{ app_path }}/{{ app_dir }}" 
+    #  bower:
+    #    path: "{{ app_path }}/{{ app_dir }}"
+    #  register: bower_install
 
-    #- name: Execute the bower install 
-    # command: bower install
-    # args:
-    #   chdir: "{{ app_path }}/{{ app_dir }}" 
-    # register: bower_install
+    - name: Execute the bower install 
+      command: bower --config.interactive=false --allow-root install
+      args:
+        chdir: "{{ app_path }}/{{ app_dir }}" 
+     register: bower_install
 
     - name: Create the build 
       command: grunt build
