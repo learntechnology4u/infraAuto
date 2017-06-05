@@ -55,7 +55,7 @@
       command: bower --config.interactive=false --allow-root install
       args:
         chdir: "{{ app_path }}/{{ app_dir }}" 
-     register: bower_install
+      register: bower_install
 
     - name: Create the build 
       command: grunt build
