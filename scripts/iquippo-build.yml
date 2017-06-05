@@ -36,11 +36,26 @@
         chdir: "{{ app_path }}/{{ app_dir }}" 
       register: npm_install
 
-    - name: Execute the bower install 
-      command: bower install
-      args:
-        chdir: "{{ app_path }}/{{ app_dir }}" 
+    - npm:
+        path: "{{ app_path }}/{{ app_dir }}"
+        name: bower
+        global: no
+    
+    - npm:
+        path: "{{ app_path }}/{{ app_dir }}"
+        name: grunt
+        global: no
+
+    - name: Install packages based on bower.json.
+      bower:
+        path: "{{ app_path }}/{{ app_dir }}"
       register: bower_install
+
+    #- name: Execute the bower install 
+    # command: bower install
+    # args:
+    #   chdir: "{{ app_path }}/{{ app_dir }}" 
+    # register: bower_install
 
     - name: Create the build 
       command: grunt build
