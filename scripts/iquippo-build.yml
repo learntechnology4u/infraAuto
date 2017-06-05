@@ -36,11 +36,11 @@
         chdir: "{{ app_path }}/{{ app_dir }}" 
       register: npm_install
 
-    - name: Execute the bower install/grunt install 
-      command: "/home/varanet/.nvm/versions/node/v0.12.7/bin/npm install -g bower grunt-cli"
-      args:
-        chdir: "{{ app_path }}/{{ app_dir }}" 
-      register: npm_install
+    #- name: Execute the bower install/grunt install 
+    #  command: "/home/varanet/.nvm/versions/node/v0.12.7/bin/npm install -g bower grunt-cli"
+    #  args:
+    #    chdir: "{{ app_path }}/{{ app_dir }}" 
+    #  register: npm_install
 
     #- npm:
     #    path: "{{ app_path }}/{{ app_dir }}"
@@ -67,10 +67,9 @@
       command: "/home/varanet/.nvm/versions/node/v0.12.7/bin/grunt build"
       args:
         chdir: "{{ app_path }}/{{ app_dir }}" 
-      register: bower_install
+      register: grunt_build
 
     - name: PM2 | Install PM2 
-      sudo: yes 
       npm: name=pm2 global=yes 
       tags: pm2
 
