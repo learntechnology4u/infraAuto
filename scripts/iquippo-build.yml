@@ -69,9 +69,11 @@
         chdir: "{{ app_path }}/{{ app_dir }}" 
       register: grunt_build
 
-    - name: PM2 | Install PM2 
-      npm: name=pm2 global=yes 
-      tags: pm2
+    - name: Execute the npm install pm2 
+      command: "/home/varanet/.nvm/versions/node/v0.12.7/bin/npm install -g pm2"
+      args:
+        chdir: "{{ app_path }}/{{ app_dir }}" 
+      register: npm_install
 
     - name: start application with pm2 
       command: pm2 start "{{ app_path }}/{{ app_dir }}/{{ server_file }}" 
