@@ -8,7 +8,7 @@
   vars:
     app_path: /home/varanet/ansible
     app_dir: iquippo.com 
-    server_file: ecosystem.config.js
+    server_file: server/ecosystem.config.js
   
   tasks:
     - stat:
@@ -76,10 +76,10 @@
       register: npm_install
 
     - name: start application with pm2 
-      command: pm2 start "{{ app_path }}/{{ app_dir }}/{{ server_file }}" 
-      ignore_errors: yes 
-      become: yes 
-      tags: pm2  
+      command: "/home/varanet/.nvm/versions/node/v0.12.7/bin/pm2 start {{ server_file }}"
+      args:
+        chdir: "{{ app_path }}/{{ app_dir }}" 
+      register: start_application
 
     - name: Print complete log list
       command: git log --pretty=oneline "{{ cloned.msg.after }}..{{ cloned.msg.before }}"
