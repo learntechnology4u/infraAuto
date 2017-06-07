@@ -25,6 +25,7 @@
         version: "{{ GIT_TAG }}"
         refspec: '+refs/heads/{{ GIT_TAG }}:refs/remotes/origin/{{ GIT_TAG }}'
         update: yes
+        force: true
       register: cloned 
     
     - debug: msg="{{ GIT_TAG }}"
