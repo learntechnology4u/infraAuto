@@ -84,6 +84,8 @@
 
     - name: Print complete log list
       command: git log --pretty=oneline "{{ cloned.after }}..{{ cloned.before }}"
+      args:
+        chdir: "{{ app_path }}/{{ app_dir }}"
       register: commits_list
 
 
