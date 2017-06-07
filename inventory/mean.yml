@@ -1,21 +1,74 @@
 ---
-  - hosts: {{ HOST }}
-  - vars:
-      node_source: https://rpm.nodesource.com/setup
-      mongo_x86_64_3.0_repo: http://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.0/x86_64/
+- hosts: {{ HOST }}
+  vars:
+    node_source: https://rpm.nodesource.com/setup
 
-  - name: Install Node Source
-    command: curl -sL {{node_source}} | bash -
-    command: yum install -y nodejs npm
+  tasks:
+    - name: Install Node Source
+      command: curl -sL {{node_source}} | bash -
+      command: yum install -y nodejs npm
 
-  - name: Init Repo
-    template: src=mongodb.repo.j2 dest=/etc/yum.repos.d/mongodb.repo
 
-  - name: Install mongodb
-    command: yum -y install mongodb-org
 
-  - name: Start mongodb
-    command: systemctl enable mongod
-    command: systemctl start mongod
+    - name: Init Repo
+      template: src=mongodb.repo.j2 dest=/etc/yum.repos.d/mongodb.repo
+
+    - name: add 10gen repo file
+      template: src=repo.j2 dest=/etc/yum.repos.d/10gen.repo
+      tags: mongodb
+
+    - name: install mongodb
+      yum: name=mongo-10gen-server state=present
+      tags: mongodb
+
+    - name: configure mongodb
+      template: src=mongod.conf.j2 dest=/etc/mongod.conf
+      tags: mongodb
+
+    - name: run mongodb
+      service: name=mongod state=started enabled=yes
+      tags: mongodb
+
+    - name: Install EPEL release for nginx
+      yum: name=epel-release state=present
+
+    - name: Install nginx web server
+      yum: name=nginx state=installed update_cache=true
+      notify:
+        - start nginx
+
+    
+    #  Only execute when require
+    #- name: copy nginx.conf to the server
+    #  template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
+    #  sudo: yes
+
+    #- name: delete default virtualhost
+    #  file: path=/etc/nginx/sites-enabled/default state=absent
+    #  sudo: yes
+
+    #- name: add mysite site-available
+    #  template: src=mysite.conf.j2 dest=/etc/nginx/sites-available/mysite.conf
+    #  sudo: yes
+
+    #- name: link mysite site-enabled
+    #  file: path=/etc/nginx/sites-enabled/mysite src=/etc/nginx/sites-available/mysite.conf state=link
+    #  sudo: yes
+
+    #- name: Execute the npm install pm2 
+    #  command: "/home/varanet/.nvm/versions/node/v0.12.7/bin/npm install -g pm2"
+    #  register: pm2_install
+
+    #- name: Execute the bower install/grunt install 
+    #  command: "/home/varanet/.nvm/versions/node/v0.12.7/bin/npm install -g bower grunt-cli"
+    #  args:
+    #    chdir: "{{ app_path }}/{{ app_dir }}" 
+    #  register: npm_install
+
+
+  
+  handlers:
+    - name: start nginx
+      service: name=nginx enables=yes state=started
 
     
