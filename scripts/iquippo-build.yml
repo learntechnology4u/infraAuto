@@ -24,9 +24,10 @@
         dest: "{{ app_path }}/{{ app_dir }}"
         version: "{{ GIT_TAG }}"
         refspec: '+refs/heads/{{ GIT_TAG }}:refs/remotes/origin/{{ GIT_TAG }}'
-        update: no
+        update: yes
       register: cloned 
-
+    
+    - debug: msg="{{ GIT_TAG }}"
     - debug: msg="{{ cloned }}"
     - debug: msg="{{ cloned }}"
       
