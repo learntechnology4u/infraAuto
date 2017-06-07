@@ -112,7 +112,7 @@
     - debug: msg="{{ commits_list }}"
     - mail:
         host: smtp.gmail.com
-        port: 25
+        port: 587
         username: atul.agrawal@varaunited.com
         password: Atul@9911
         to: Atul Agrawal <atul.agrawal@varaunited.com>
