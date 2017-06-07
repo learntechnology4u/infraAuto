@@ -28,9 +28,8 @@
         force: true
       register: cloned 
     
-    - debug: msg="{{ GIT_TAG }}"
-    - debug: msg="{{ cloned }}"
-    - debug: msg="{{ cloned }}"
+    - debug: msg="{{ cloned.before }}"
+    - debug: msg="{{ cloned.after }}"
       
     - name: Execute the npm install 
       command: npm install
@@ -84,7 +83,7 @@
       register: start_application
 
     - name: Print complete log list
-      command: git log --pretty=oneline "{{ cloned.msg.after }}..{{ cloned.msg.before }}"
+      command: git log --pretty=oneline "{{ cloned.after }}..{{ cloned.before }}"
       register: commits_list
 
 
@@ -118,6 +117,8 @@
         subject: Deployment Status
         body: 'Your deployment has been successfully done.Commits Deployed List'
 
+    - debug: msg="{{ GIT_TAG }}"
+    - debug: msg="{{ cloned }}"
     - debug: mag="{{ commits_list }}"
     - debug: msg="{{npm_install.stdout}}"
     - debug: msg="{{npm_install.stderr}}"
