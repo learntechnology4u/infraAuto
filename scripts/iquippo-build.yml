@@ -109,7 +109,7 @@
     #  file: path=/etc/nginx/sites-enabled/mysite src=/etc/nginx/sites-available/mysite.conf state=link
     #  sudo: yes
 
-    - debug: mag="{{ commits_list }}"
+    - debug: msg="{{ commits_list }}"
     - mail:
         host: smtp.gmail.com
         port: 25
