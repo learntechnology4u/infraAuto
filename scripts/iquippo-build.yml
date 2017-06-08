@@ -11,18 +11,56 @@
     server_dir: server
   
   tasks:
-#- stat:#    path: "{{ app_path }}"#  register: exist
-#- name: create "{{ app_path }}" directory#  file: dest={{ app_path }} state=directory owner=varanet group=varanet mode=0700#  when: exist.stat.exists != True
-#- git: #    repo: http://atul:Atul9911@199.217.116.19/iquippo/iquippo.com.git#    dest: "{{ app_path }}/{{ app_dir }}"#    version: "{{ GIT_TAG }}"#    refspec: '+refs/heads/{{ GIT_TAG }}:refs/remotes/origin/{{ GIT_TAG }}'#    update: yes#    force: true#  register: cloned #      #- name: Execute the npm install #  command: npm install#  args:#    chdir: "{{ app_path }}/{{ app_dir }}" #  register: npm_install
-#- name: Execute the bower install #  command: "/home/varanet/.nvm/versions/node/v0.12.7/bin/bower --config.interactive=false --allow-root install"#  args:#    chdir: "{{ app_path }}/{{ app_dir }}" #  register: bower_install
-#- name: Create the build #  command: "/home/varanet/.nvm/versions/node/v0.12.7/bin/grunt build"#  args:#    chdir: "{{ app_path }}/{{ app_dir }}" #  register: grunt_build
-#- name: start application with pm2 #  command: "/home/varanet/.nvm/versions/node/v0.12.7/bin/pm2 start ecosystem.config.js"#  args:#    chdir: "{{ app_path }}/{{ app_dir }}/{{ server_dir }}" #  register: start_application
-#- name: Print complete log list#  command: git log --pretty=oneline "{{ cloned.after }}..{{ cloned.before }}"#  args:#    chdir: "{{ app_path }}/{{ app_dir }}"#  register: commits_list
+    - stat:
+        path: "{{ app_path }}"
+      register: exist
+
+    - name: create "{{ app_path }}" directory
+      file: dest={{ app_path }} state=directory owner=varanet group=varanet mode=0700
+      when: exist.stat.exists != True
+
+    - git: 
+        repo: http://atul:Atul9911@199.217.116.19/iquippo/iquippo.com.git
+        dest: "{{ app_path }}/{{ app_dir }}"
+        version: "{{ GIT_TAG }}"
+        refspec: '+refs/heads/{{ GIT_TAG }}:refs/remotes/origin/{{ GIT_TAG }}'
+        update: yes
+        force: true
+      register: cloned 
+          
+    - name: Execute the npm install 
+      command: npm install
+      args:
+        chdir: "{{ app_path }}/{{ app_dir }}" 
+      register: npm_install
+
+    - name: Execute the bower install 
+      command: "/home/varanet/.nvm/versions/node/v0.12.7/bin/bower --config.interactive=false --allow-root install"
+      args:
+        chdir: "{{ app_path }}/{{ app_dir }}" 
+      register: bower_install
+
+    - name: Create the build 
+      command: "/home/varanet/.nvm/versions/node/v0.12.7/bin/grunt build"
+      args:
+        chdir: "{{ app_path }}/{{ app_dir }}" 
+      register: grunt_build
+
+    - name: start application with pm2 
+      command: "/home/varanet/.nvm/versions/node/v0.12.7/bin/pm2 start ecosystem.config.js"
+      args:
+        chdir: "{{ app_path }}/{{ app_dir }}/{{ server_dir }}" 
+      register: start_application
+
+    - name: Print complete log list
+      command: git log --pretty=oneline "{{ cloned.after }}..{{ cloned.before }}"
+      args:
+        chdir: "{{ app_path }}/{{ app_dir }}"
+      register: commits_list
 
     - mail:
         host: smtp.gmail.com
-        port: 25
-        secure: starttls
+        port: 465
         username: atul.agrawal@varaunited.com
         password: Atul@9911
         from: Atul Agrawal <atul.agrawal@varaunited.com>
