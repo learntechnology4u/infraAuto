@@ -1,0 +1,15 @@
+server {  
+ listen 80; 
+ listen 443 ssl; 
+ server_name   local.iquippo.com; 
+ root /var/www/ansible/iquippo.com/dist/public;
+ index index.html index.htm; 
+
+ #access_log /var/log/nginx/topup-paytm.access.log; 
+ #error_log  /var/log/nginx/topup-paytm.error.log; 
+ underscores_in_headers on; 
+ location /   {  
+    #try_files $uri $uri/index.html @proxy; 
+      proxy_pass http://localhost:9010;
+ }
+}

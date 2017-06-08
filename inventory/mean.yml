@@ -8,8 +8,6 @@
       command: curl -sL {{node_source}} | bash -
       command: yum install -y nodejs npm
 
-
-
     - name: Init Repo
       template: src=mongodb.repo.j2 dest=/etc/yum.repos.d/mongodb.repo
 
