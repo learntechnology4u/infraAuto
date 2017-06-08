@@ -66,13 +66,13 @@
         from: Atul Agrawal <atul.agrawal@varaunited.com>
         to: Atul Agrawal <atul.agrawal@varaunited.com>
         subject: Deployment Status
-        body: 'Your deployment has been successfully done.Commits Deployed List'
+        body: 'Your deployment has been successfully done.Commits Deployed List<p>{{ commits_list.stdout_lines }}</p>'
       delegate_to: localhost
 
-    - debug: msg="{{ commits_list }}"
+    - debug: msg="{{ commits_list.stdout_lines }}"
     - debug: msg="{{ GIT_TAG }}"
     - debug: msg="{{ cloned }}"
-    - debug: mag="{{ commits_list }}"
+    - debug: msg="{{ commits_list }}"
     - debug: msg="{{ npm_install.stdout }}"
     - debug: msg="{{ npm_install.stderr }}"
     - debug: msg="{{ bower_install.stdout }}"
