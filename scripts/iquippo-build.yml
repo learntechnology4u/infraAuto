@@ -57,7 +57,7 @@
       args:
         chdir: "{{ app_path }}/{{ app_dir }}"
       register: commits_list
-
+  
     - mail:
         host: smtp.gmail.com
         port: 465
@@ -73,11 +73,11 @@
     - debug: msg="{{ GIT_TAG }}"
     - debug: msg="{{ cloned }}"
     - debug: mag="{{ commits_list }}"
-    - debug: msg="{{npm_install.stdout}}"
-    - debug: msg="{{npm_install.stderr}}"
-    - debug: msg="{{bower_install.stdout}}"
-    - debug: msg="{{bower_install.stderr}}"
-    - debug: msg="{{pm2_restart.stdout}}"
+    - debug: msg="{{ npm_install.stdout }}"
+    - debug: msg="{{ npm_install.stderr }}"
+    - debug: msg="{{ bower_install.stdout }}"
+    - debug: msg="{{ bower_install.stderr }}"
+    - debug: msg="{{ pm2_restart.stdout }}"
         
 
 
