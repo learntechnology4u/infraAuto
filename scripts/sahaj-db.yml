@@ -26,11 +26,11 @@
         force: true
       register: cloned 
     
-    - name: Install python dependency
-      command: easy_install MySQL-python
-      become: true
-      become_user: "{{ become_user }}"
-      become_method: su
+    #- name: Install python dependency
+    #  command: easy_install MySQL-python
+    #  become: true
+    #  become_user: "{{ become_user }}"
+    #  become_method: su
         
     - name: Execute mysql dump files
       mysql_db:
