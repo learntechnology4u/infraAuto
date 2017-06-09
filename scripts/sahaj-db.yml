@@ -29,8 +29,8 @@
     - name: Install python dependency
       command: easy_install MySQL-python
       become: true
-      become_user: devops
-      become_method: su
+      become_user: "{{ become_user }}"
+      become_method: sudo
         
     - name: Execute mysql dump files
       mysql_db:
