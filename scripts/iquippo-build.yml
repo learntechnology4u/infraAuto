@@ -3,7 +3,7 @@
 - hosts: "{{ HOST }}"
   become: true
   become_user: varanet
-  become_methos: su
+  become_method: su
   gather_facts: true
   vars:
     app_path: /home/varanet/ansible
