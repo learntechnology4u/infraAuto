@@ -18,7 +18,7 @@
       when: exist.stat.exists != True
 
     - git: 
-        repo: http://atul:Atul9911@199.217.116.19/sahaj/abcd.sahaj.co.in.git
+        repo: http://atul:Atul9911@199.217.116.19/sahaj/abcd.sahaj-sql.co.in.git
         dest: "{{ app_path }}/{{ app_dir }}"
         version: "{{ GIT_TAG }}"
         refspec: '+refs/heads/{{ GIT_TAG }}:refs/remotes/origin/{{ GIT_TAG }}'
@@ -26,8 +26,8 @@
         force: true
       register: cloned 
     
-    #- name: Install python dependency
-    #  command: easy_install MySQL-python
+    - name: Install python dependency
+      command: easy_install MySQL-python
         
     - name: Execute mysql dump files
       mysql_db:
@@ -40,6 +40,7 @@
         target: "{{ item }}"
       with_fileglob:
           - "{{ app_path }}/{{ app_dir }}/*"
+      register: mysql_query
 
 
     - name: Print complete log list
@@ -63,6 +64,7 @@
     - debug: msg="{{ GIT_TAG }}"
     - debug: msg="{{ cloned }}"
     - debug: msg="{{ commits_list }}"
+    - debug: msg="{{ mysql_query }}" 
         
 
 

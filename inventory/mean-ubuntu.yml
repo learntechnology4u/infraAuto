@@ -1,18 +1,20 @@
 ---
-- hosts: bharat-connect
+- hosts: "{{ HOST }}"
   become: true
   become_user: root
   gather_facts: true
   become_method: sudo
+  
   vars:
-    ansible_sudo_pass: sid1234
+    ansible_sudo_pass: "{{sudo_pass}}"
     temp_folder: /tmp
-    node_version: "0.12.7"
-    node_prefix: "node-v{{node_version}}"
-    node_tarball: "{{node_prefix}}.tar.gz"
-    node_path: "/usr/local"
 
   tasks:
+    - name: Include variables
+      include_vars:
+        dir: '../vars'
+        extensions: ['yml']
+  
     - name: Install git  
       apt:    
         name: git    
@@ -21,14 +23,14 @@
 
     - name: MongoDB | Import public key
       apt_key:
-        keyserver: hkp://keyserver.ubuntu.com:80
-        id: EA312927
+        keyserver: "{{ keyserver }}"
+        id: "{{ id }}"
     
 
     - name: MongoDB | Add repository
       apt_repository:
         filename: '/etc/apt/sources.list.d/mongodb-org-3.2.list'
-        repo: 'deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.2 multiverse'
+        repo: "{{ mongo_repo }}"
         state: present
         update_cache: yes
     
@@ -97,16 +99,16 @@
 
     #  Only execute when require
     - name: copy nginx.conf to the server
-      template: src={{ item }} dest=/etc/nginx/sites-available/iquippo.conf
+      template: src={{ item }} dest=/etc/nginx/sites-available/"{{ build }}.conf"
       with_fileglob:
         - ../templates/nginx.conf.j2
       become: true
       become_user: root
 
-    - name: delete default virtualhost
-      file: path=/etc/nginx/sites-enabled/default state=absent
-      become: true
-      become_user: 
+    #- name: delete default virtualhost
+    #  file: path=/etc/nginx/sites-enabled/default state=absent
+    #  become: true
+    #  become_user: 
 
     #- name: add mysite site-available
     #  template: 
@@ -115,7 +117,7 @@
     #  sudo: yes
 
     - name: link mysite site-enabled
-      file: path=/etc/nginx/sites-enabled/mysite src=/etc/nginx/sites-available/mysite.conf state=link
+      file: path=/etc/nginx/sites-enabled/ src=/etc/nginx/sites-available/{{ build }}.conf state=link
       become: true
       become_user: root
 

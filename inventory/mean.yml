@@ -1,70 +1,98 @@
 ---
 - hosts: {{ HOST }}
   vars:
-    node_source: https://rpm.nodesource.com/setup
-
+    ansible_sudo_pass: "{{ sudo_pass }}"
+    
   tasks:
-    - name: Install Node Source
-      command: curl -sL {{node_source}} | bash -
-      command: yum install -y nodejs npm
+    - name: Install git  
+      yum:    
+        name: git    
+        state: present    
+        update_cache: yes
 
-    - name: Init Repo
-      template: src=mongodb.repo.j2 dest=/etc/yum.repos.d/mongodb.repo
+    - name: RedHat | Install dependencies packages
+      yum: name={{ item }} state=installed
+      with_items: "{{ mongodb_packages_dependencies | default([]) }}"
 
-    - name: add 10gen repo file
-      template: src=repo.j2 dest=/etc/yum.repos.d/10gen.repo
-      tags: mongodb
+    - name: RedHat | Add source sources
+      yum_repository:
+        name: mongodb-org-{{ mongodb_version }}
+        description: MongoDB Repository
+        baseurl: "{{ mongodb_repo_baseurl }}"
+        gpgcheck: "{{ mongodb_repo_gpgcheck }}"
+        gpgkey: "{{ mongodb_repo_gpgkey }}"
 
-    - name: install mongodb
-      yum: name=mongo-10gen-server state=present
-      tags: mongodb
+    - name: RedHat | Install Packages
+      yum: name={{ item }} state=installed
+      with_items: "{{ mongodb_packages }}"
 
-    - name: configure mongodb
-      template: src=mongod.conf.j2 dest=/etc/mongod.conf
-      tags: mongodb
+    
+    - name: Node.js | Checking installed version of node.js
+      shell: /usr/bin/test "$(node -v 2> /dev/null)" = v{{node_version}}
+      register: wanted_version_installed
+      ignore_errors: True
 
-    - name: run mongodb
-      service: name=mongod state=started enabled=yes
-      tags: mongodb
+    - name: Node.js | Fetching node.js source
+      action: get_url url=http://nodejs.org/dist/v{{node_version}}/{{node_tarball}} dest=/tmp
+      when: wanted_version_installed.rc == 1
+      become: true
+      become_user: root
 
-    - name: Install EPEL release for nginx
-      yum: name=epel-release state=present
+    - name: Node.js | Unpack node.js tarball
+      command: tar zxf {{node_tarball}} chdir=/tmp
+      when: wanted_version_installed.rc == 1
+      become: true
+      become_user: root
+
+    - name: Node.js | Configure
+      shell: /usr/bin/python ./configure --prefix={{node_path}} chdir=/tmp/{{node_prefix}}
+      when: wanted_version_installed.rc == 1
+      become: true
+      become_user: root
+
+    - name: Node.js | Make
+      shell: /usr/bin/make chdir=/tmp/{{node_prefix}}/
+      when: wanted_version_installed.rc == 1
+      become: true
+      become_user: root
+
+    - name: Node.js | Make install
+      shell: /usr/bin/make install chdir=/tmp/{{node_prefix}}/
+      when: wanted_version_installed.rc == 1
+      become: true
+      become_user: root
+
+    - name: Node.js | Install bower and gulp globally
+      npm: name={{ item }} state=present global=yes
+      with_items:
+        - bower
+        - grunt-cli
+        - pm2    
 
     - name: Install nginx web server
       yum: name=nginx state=installed update_cache=true
       notify:
         - start nginx
+      become: true
+      become_user: root
+
+    #  Only execute when require
+    - name: copy nginx.conf to the server
+      template: src=nginx.conf.j2 dest=/etc/nginx/conf.d/"{{ build }}.conf"
+      become: true
+      become_user: root
+
+    - name: delete default virtualhost
+      file: path=/etc/nginx/nginx.conf state=absent
+      become: true
+      become_user: root
+
+    - name: Restart nginx service
+      command: service nginx restart
+      become: true
+      become_user: root
 
     
-    #  Only execute when require
-    #- name: copy nginx.conf to the server
-    #  template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
-    #  sudo: yes
-
-    #- name: delete default virtualhost
-    #  file: path=/etc/nginx/sites-enabled/default state=absent
-    #  sudo: yes
-
-    #- name: add mysite site-available
-    #  template: src=mysite.conf.j2 dest=/etc/nginx/sites-available/mysite.conf
-    #  sudo: yes
-
-    #- name: link mysite site-enabled
-    #  file: path=/etc/nginx/sites-enabled/mysite src=/etc/nginx/sites-available/mysite.conf state=link
-    #  sudo: yes
-
-    #- name: Execute the npm install pm2 
-    #  command: "/home/varanet/.nvm/versions/node/v0.12.7/bin/npm install -g pm2"
-    #  register: pm2_install
-
-    #- name: Execute the bower install/grunt install 
-    #  command: "/home/varanet/.nvm/versions/node/v0.12.7/bin/npm install -g bower grunt-cli"
-    #  args:
-    #    chdir: "{{ app_path }}/{{ app_dir }}" 
-    #  register: npm_install
-
-
-  
   handlers:
     - name: start nginx
       service: name=nginx enables=yes state=started
