@@ -30,7 +30,9 @@
     #  command: easy_install MySQL-python
     #  become: true
     #  become_user: "{{ become_user }}"
-    #  become_method: su
+    #   become_method: su
+
+    debug: msg="{{ app_path }}/{{ app_dir }}/{{ scrips_dir }}"
         
     - name: Execute mysql dump files
       mysql_db:
@@ -42,8 +44,9 @@
         state: import
         target: "{{ item }}"
       with_fileglob:
-          - "{{ app_path }}/{{ app_dir }}/*"
+          - "{{ app_path }}/{{ app_dir }}/{{ scrips_dir }}/*"
       register: mysql_query
+      #when: cloned.changed
 
 
     - name: Print complete log list
