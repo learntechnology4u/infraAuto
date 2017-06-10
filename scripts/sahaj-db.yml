@@ -32,7 +32,7 @@
     #  become_user: "{{ become_user }}"
     #   become_method: su
 
-    debug: msg="{{ app_path }}/{{ app_dir }}/{{ scrips_dir }}"
+    - debug: msg="{{ app_path }}/{{ app_dir }}/{{ scrips_dir }}"
         
     - name: Execute mysql dump files
       mysql_db:
