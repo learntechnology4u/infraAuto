@@ -1,8 +1,0 @@
-[localhost]
-127.0.0.1 ansible_connection=local
-
-[iquippo-staging]
-54.179.148.145 ansible_connection=ssh  ansible_user=ubuntu  ansible_ssh_private_key_file=/home/atul/Downloads/stagingiquippo.pem
-
-[varanet-server]
-199.217.116.19 ansible_connection=ssh ansible_user=varanet ansible_ssh_pass=rootvara#123 ansible_ssh_port=22 
