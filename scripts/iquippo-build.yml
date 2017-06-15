@@ -2,11 +2,11 @@
 # - name: 'iquippo-build-creation'
 - hosts: "{{ HOST }}"
   become: true
-  become_user: varanet
+  become_user: www-data
   become_method: su
   gather_facts: true
   vars:
-    app_path: /home/varanet/ansible
+    app_path: /var/www/
     app_dir: iquippo.com 
     server_dir: server
   
@@ -16,7 +16,7 @@
       register: exist
 
     - name: create "{{ app_path }}" directory
-      file: dest={{ app_path }} state=directory owner=varanet group=varanet mode=0700
+      file: dest={{ app_path }} state=directory owner=www-data group=www-data mode=0700
       when: exist.stat.exists != True
 
     - git: 
@@ -28,6 +28,8 @@
         force: true
       register: cloned 
           
+    
+
     - name: Execute the npm install 
       command: npm install
       args:
@@ -35,13 +37,13 @@
       register: npm_install
 
     - name: Execute the bower install 
-      command: "/usr/local/bin/bower --config.interactive=false --allow-root install"
+      command: "bower --config.interactive=false --allow-root install"
       args:
         chdir: "{{ app_path }}/{{ app_dir }}" 
       register: bower_install
 
     - name: Create the build 
-      command: "/usr/local/bin/grunt build"
+      command: "grunt build"
       args:
         chdir: "{{ app_path }}/{{ app_dir }}" 
       register: grunt_build
@@ -51,7 +53,7 @@
 #    -name: Create application db
 
     - name: start application with pm2 
-      command: "/usr/local/bin/pm2 start ecosystem.config.js"
+      command: "pm2 start ecosystem.config.js"
       args:
         chdir: "{{ app_path }}/{{ app_dir }}/{{ server_dir }}" 
       register: pm2_restart
