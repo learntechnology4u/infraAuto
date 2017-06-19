@@ -2,13 +2,14 @@
 # - name: 'iquippo-build-creation'
 - hosts: "{{ HOST }}"
   become: true
-  become_user: www-data
+  become_user: "{{ user }}"
   become_method: su
   gather_facts: true
   vars:
     app_path: /var/www/
     app_dir: iquippo.com 
     server_dir: server
+    timeout: 120s
   
   tasks:
     - stat:
@@ -26,10 +27,11 @@
         refspec: '+refs/heads/{{ GIT_TAG }}:refs/remotes/origin/{{ GIT_TAG }}'
         update: yes
         force: true
+      become: true
+      become_user: www-data
+      become_method: su
       register: cloned 
           
-    
-
     - name: Execute the npm install 
       command: npm install
       args:
