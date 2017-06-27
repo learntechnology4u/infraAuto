@@ -1,13 +1,12 @@
 local ansible_ssh_host=127.0.0.1
 
-staging ansible_ssh_host=54.179.148.145 ansible_connection=ssh  ansible_user=ubuntu  ansible_ssh_private_key_file=#######
+staging ansible_ssh_host=54.179.148.145 ansible_connection=ssh  ansible_user=ubuntu  
 
-vara-dev ansible_ssh_host=199.217.116.19 ansible_connection=ssh ansible_user=varanet  ansible_password=########
+vara-dev ansible_ssh_host=199.217.116.19 ansible_connection=ssh ansible_user=varanet  
 
-bharat-connect ansible_ssh_host=192.168.14.120 ansible_connection=ssh ansible_user=siddhant ansible_ssh_pass=#######
+bharat-connect ansible_ssh_host=192.168.14.120 ansible_connection=ssh ansible_user=siddhant 
 
-dev-server ansible_ssh_host=69.64.33.82 ansible_user=admin  ansible_ssh_pass=######### 
-
+dev-server ansible_ssh_host=69.64.33.82 ansible_user=admin  
 [localhost]
 local
 
