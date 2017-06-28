@@ -6,7 +6,7 @@
   become_method: su
   gather_facts: true
   vars:
-    app_path: /var/www/
+    app_path: /home/admin/
     app_dir: iquippo.com 
     server_dir: server
     timeout: 120s
@@ -17,7 +17,8 @@
       register: exist
 
     - name: create "{{ app_path }}" directory
-      file: dest={{ app_path }} state=directory owner=www-data group=www-data mode=0700
+      file: dest={{ app_path }} state=directory 
+      #owner=www-data group=www-data mode=0700
       when: exist.stat.exists != True
 
     - git: 
@@ -27,9 +28,9 @@
         refspec: '+refs/heads/{{ GIT_TAG }}:refs/remotes/origin/{{ GIT_TAG }}'
         update: yes
         force: true
-      become: true
-      become_user: www-data
-      become_method: su
+      #become: true
+      #become_user: www-data
+      #become_method: su
       register: cloned 
           
     - name: Execute the npm install 
