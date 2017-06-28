@@ -6,3 +6,5 @@ mongodb_repo_gpgcheck: yes
 mongodb_repo_gpgkey: https://www.mongodb.org/static/pgp/server-{{ mongodb_version }}.asc
 mongodb_packages_dependencies:
   - libselinux-python
+mongodb_packages:
+  - mongodb-org

@@ -1,12 +1,12 @@
 server {  
- listen 80; 
+ listen 8088; 
  listen 443 ssl; 
- server_name   local.iquippo.com; 
+ server_name   69.64.33.82; 
  root /var/www/iquippo.com/dist/public;
  index index.html index.htm; 
 
- #access_log /var/log/nginx/topup-paytm.access.log; 
- #error_log  /var/log/nginx/topup-paytm.error.log; 
+ access_log /var/log/nginx/iquippo.access.log; 
+ error_log  /var/log/nginx/iquippo.error.log; 
  underscores_in_headers on; 
  location /   {  
     #try_files $uri $uri/index.html @proxy; 
