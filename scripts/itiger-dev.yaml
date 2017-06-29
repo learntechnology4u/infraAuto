@@ -17,7 +17,7 @@
       register: exist
 
     - name: create "{{ app_path }}" directory
-      file: dest={{ app_path }} state=directory 
+      file: dest="{{ app_path }}/{{ app_dir }}" state=directory 
       #owner= "{{ become_user }}" group= "{{ become_user }}" mode=0700
       when: exist.stat.exists != True
 
