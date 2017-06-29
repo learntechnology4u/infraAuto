@@ -13,7 +13,7 @@
   
   tasks:
     - stat:
-        path: "{{ app_path }}"
+        path: "{{ app_path }}/{{ app_dir }}"
       register: exist
 
     - name: create "{{ app_path }}" directory
