@@ -50,6 +50,11 @@
       args:
         chdir: "{{ app_path }}/{{ app_dir }}" 
       register: grunt_build
+      become: true
+      become_user: "{{ user }}"
+      become_method: su
+
+
 
 #- hosts: "{{ dbserver }}"
 #  tasks : 
@@ -60,6 +65,10 @@
       args:
         chdir: "{{ app_path }}/{{ app_dir }}/{{ server_dir }}" 
       register: pm2_restart
+      become: true
+      become_user: "{{ user }}"
+      become_method: su
+
 
     - name: Print complete log list
       command: git log --pretty=oneline "{{ cloned.after }}..{{ cloned.before }}"
