@@ -22,7 +22,7 @@
       when: exist.stat.exists != True
 
     - git: 
-        repo: http://atul:Atul9911@199.217.116.19/sahaj/abcd.sahaj.co.in.git
+        repo: http://atul:Atul9911@199.217.116.19/iTigerShop/itigershop-staging.com
         dest: "{{ app_path }}"
         version: "{{ GIT_TAG }}"
         refspec: '+refs/heads/{{ GIT_TAG }}:refs/remotes/origin/{{ GIT_TAG }}'
