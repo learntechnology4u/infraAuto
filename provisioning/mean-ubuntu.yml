@@ -6,7 +6,7 @@
   become_method: sudo
   
   vars:
-    ansible_sudo_pass: "{{sudo_pass}}"
+    ansible_sudo_pass: "{{ sudo_pass }}"
     temp_folder: /tmp
 
   tasks:
@@ -21,30 +21,43 @@
         state: present    
         update_cache: yes
 
-    - name: MongoDB | Import public key
-      apt_key:
-        keyserver: "{{ keyserver }}"
-        id: "{{ id }}"
+    #- name: MongoDB | Import public key
+    #  apt_key:
+    #    keyserver: "{{ keyserver }}"
+    #    id: "{{ id }}"
     
 
-    - name: MongoDB | Add repository
-      apt_repository:
-        filename: '/etc/apt/sources.list.d/mongodb-org-3.2.list'
-        repo: "{{ mongo_repo }}"
-        state: present
-        update_cache: yes
+    #- name: MongoDB | Add repository
+    ##  apt_repository:
+    #    filename: '/etc/apt/sources.list.d/mongodb-org-3.2.list'
+    #    repo: "{{ mongo_repo }}"
+    #    state: present
+    #    update_cache: yes
     
-    - name: MongoDB | Install MongoDB
-      apt:
-        name: mongodb-org
-        state: present
-        update_cache: yes
-    
+    #- name: MongoDB | Install MongoDB
+    #  apt:
+    #    name: mongodb-org
+    #    state: present
+    #    update_cache: yes
+    #  environment:
+    #    LC_ALL: "C"
 
-    - name: MongoDB | Ensure that MongoDB is running
-      service:
-        name: mongod
-        state: started
+    #- name: Create /data/db directory
+    #  command: "mkdir -p {{ ansible_env.HOME}}/data/db"
+  
+
+    #- name: MongoDB | Ensure that MongoDB is running
+    #  service:
+    #    name: mongod
+    #    state: started
+    
+    - name: Install gcc/build tools 
+      apt: name={{ item }} state=installed
+      become: true
+      become_user: root
+      with_items:
+        - gcc
+        - build-essential
 
     
     - name: Node.js | Checking installed version of node.js
@@ -70,8 +83,8 @@
       become: true
       become_user: root
 
-    - name: Node.js | Make
-      shell: /usr/bin/make chdir=/tmp/{{node_prefix}}/
+    - name: Node.js | Make test
+      shell: /usr/bin/make test chdir=/tmp/{{node_prefix}}/
       when: wanted_version_installed.rc == 1
       become: true
       become_user: root
