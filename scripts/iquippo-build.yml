@@ -35,6 +35,7 @@
           
     - name: Execute the npm install 
       command: npm install
+      ignore_errors: true
       args:
         chdir: "{{ app_path }}/{{ app_dir }}" 
       register: npm_install
