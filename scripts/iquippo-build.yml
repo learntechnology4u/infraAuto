@@ -6,7 +6,7 @@
   become_method: su
   gather_facts: true
   vars:
-    app_path: /tmp/
+    app_path: /home/admin/
     app_dir: iquippo.com 
     server_dir: server
     timeout: 120s
@@ -54,7 +54,6 @@
       become_user: "{{ user }}"
       become_method: su
 
-    - name: Create a backup of current 
 
 
 #- hosts: "{{ dbserver }}"
