@@ -12,11 +12,11 @@
     server_dir: server
   
   tasks:
-   - stat:
-      path: "{{ app_path }}/{{ app_dir }}"
+    - stat:
+        path: "{{ app_path }}/{{ app_dir }}"
       register: exist
 
-    - name: create "{{ app_path }}" directory
+    - name: create "{{ app_path }}/{{ app_dir }}" directory
       file: dest="{{ app_path }}/{{ app_dir }}" state=directory 
       #owner= "{{ become_user }}" group= "{{ become_user }}" mode=0700
       when: exist.stat.exists != True
