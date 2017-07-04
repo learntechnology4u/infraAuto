@@ -39,15 +39,18 @@
       args:
         chdir: "{{ app_path }}/{{ app_dir }}" 
       register: npm_install
+      become: true
+      become_user: "{{ user }}"
+      become_method: su
 
     - name: Execute the bower install 
       command: "bower install"
       args:
         chdir: "{{ app_path }}/{{ app_dir }}" 
       register: bower_install
+      become: true
       become_user: "{{ user }}"
       become_method: su
-
 
     - name: Create the build 
       command: "grunt build"
