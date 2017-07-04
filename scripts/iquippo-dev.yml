@@ -13,11 +13,11 @@
   
   tasks:
     - stat:
-        path: "{{ app_path }}"
+        path: "{{ app_path }}/{{ app_dir }}"
       register: exist
 
-    - name: create "{{ app_path }}" directory
-      file: dest={{ app_path }} state=directory 
+    - name: create "{{ app_path }}/{{ app_dir }}" directory
+      file: dest={{ app_path }}/{{ app_dir }} state=directory 
       #owner=www-data group=www-data mode=0700
       when: exist.stat.exists != True
 

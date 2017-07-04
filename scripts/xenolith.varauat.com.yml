@@ -8,7 +8,7 @@
   vars:
     ansible_sudo_pass: "{{ sudo_pass }}"
     app_path: "{{ app_path }}"
-    app_dir: xenolith.varadev.com
+    app_dir: xenolith.varauat.com
     server_dir: server
   
   tasks:
