@@ -41,7 +41,7 @@
       register: npm_install
 
     - name: Execute the bower install 
-      command: "bower --config.interactive=false --allow-root install"
+      command: "bower install"
       args:
         chdir: "{{ app_path }}/{{ app_dir }}" 
       register: bower_install
