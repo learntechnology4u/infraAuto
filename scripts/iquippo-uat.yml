@@ -45,6 +45,9 @@
       args:
         chdir: "{{ app_path }}/{{ app_dir }}" 
       register: bower_install
+      become_user: "{{ user }}"
+      become_method: su
+
 
     - name: Create the build 
       command: "grunt build"
