@@ -28,25 +28,19 @@
       register: cloned  
 
 
-    
-    #- name: Install python dependency
-    #  command: easy_install MySQL-python
-    #  become: true
-    #  become_user: "{{ become_user }}"
-    #   become_method: su
+    - find:
+        paths: "{{ app_path }}/{{ app_dir }}/{{ scrips_dir }}"
+        patterns: "*.sql"
+      register: files_sql
 
-    # - debug: msg="{{ app_path }}/{{ app_dir }}/{{ scrips_dir }}"
-        
+     
     - name: Execute postgres dump files
-      shell: "sudo -u postgres psql -qAtw -f  {{ item }}"
+      shell: "psql -U {{ db_user }} -d {{ db_database }} -qAtw -f  {{ item.path }}"
       with_items:
-          - "{{ app_path }}/{{ app_dir }}/{{ scripts_dir }}/*"
+          - "{{ files_sql.files }}"
       register: postgres_sql
      
-  
-      #when: cloned.changed
-
-
+     
     - name: Print complete log list
       command: git log --pretty=oneline "{{ cloned.after }}..{{ cloned.before }}"
       args:
