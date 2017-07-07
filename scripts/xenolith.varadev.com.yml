@@ -6,7 +6,6 @@
   become_method: su
   gather_facts: true
   vars:
-    ansible_sudo_pass: "{{ sudo_pass }}"
     app_path: "{{ app_path }}"
     app_dir: xenolith.varadev.com
     server_dir: server
