@@ -10,6 +10,7 @@ dev-server1 ansible_ssh_host=69.64.33.82 ansible_connection=ssh ansible_user=adm
 
 dev-server2 ansible_ssh_host=69.64.61.230 ansible_connection=ssh ansible_user=admin  
 
+	
 
 [localhost]
 local
@@ -26,3 +27,14 @@ dev-server2
 
 [bharat]
 bharat-connect
+
+[windows-uat-server]
+49.248.246.68
+
+[windows-uat-server:vars]
+ansible_user=varanet
+ansible_password=Varaa1b2c3d4e5root 
+ansible_port=5985
+ansible_connection=winrm
+ansible_winrm_scheme=http
+ansible_winrm_server_cert_validation=ignore

@@ -1,16 +1,12 @@
----
-# - name: 'iquippo-build-creation'
 - hosts: "{{ HOST }}"
   become: true
-  become_user: "{{ become_user }}"
+  become_user: "admin"
   become_method: su
   gather_facts: true
   vars:
-    ansible_sudo_pass: "{{ sudo_pass }}"
     app_path: "{{ app_path }}"
-    app_dir: xenolith.varadev.com
-    server_dir: server
-  
+    app_dir: "{{ app_dir }}"
+    
   tasks:
     - stat:
         path: "{{ app_path }}/{{ app_dir }}"
@@ -23,15 +19,34 @@
 
 
     - git: 
-        repo: http://atul:Atul9911@199.217.116.19/Vara-Internal/xenolith.varadev.com.git
+        repo: http://atul:Atul9911@199.217.116.19/Vara-Internal/postgres-demo.git
         dest: "{{ app_path }}/{{ app_dir }}"
         version: "{{ GIT_TAG }}"
         refspec: '+refs/heads/{{ GIT_TAG }}:refs/remotes/origin/{{ GIT_TAG }}'
         update: yes
         force: true
-      register: cloned 
-          
+      register: cloned  
+
+
     
+    #- name: Install python dependency
+    #  command: easy_install MySQL-python
+    #  become: true
+    #  become_user: "{{ become_user }}"
+    #   become_method: su
+
+    # - debug: msg="{{ app_path }}/{{ app_dir }}/{{ scrips_dir }}"
+        
+    - name: Execute postgres dump files
+      shell: "sudo -u postgres psql -qAtw -f  {{ item }}"
+      with_items:
+          - "{{ app_path }}/{{ app_dir }}/{{ scripts_dir }}/*"
+      register: postgres_sql
+     
+  
+      #when: cloned.changed
+
+
     - name: Print complete log list
       command: git log --pretty=oneline "{{ cloned.after }}..{{ cloned.before }}"
       args:
@@ -53,6 +68,7 @@
     - debug: msg="{{ GIT_TAG }}"
     - debug: msg="{{ cloned }}"
     - debug: msg="{{ commits_list }}"
+    - debug: msg="{{ postgres_sql }}" 
         
 
 
