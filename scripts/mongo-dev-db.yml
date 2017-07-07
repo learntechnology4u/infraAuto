@@ -17,7 +17,7 @@
       when: exist.stat.exists != True
 
     - git: 
-        repo: http://atul:Atul9911@199.217.116.19/sahaj/abcd.sahaj-sql.co.in.git
+        repo: http://atul:Atul9911@199.217.116.19/Vara-Internal/mongo-db-dev.git
         dest: "{{ app_path }}/{{ app_dir }}"
         version: "{{ GIT_TAG }}"
         refspec: '+refs/heads/{{ GIT_TAG }}:refs/remotes/origin/{{ GIT_TAG }}'
@@ -33,23 +33,17 @@
 
     - find:
         paths: "{{ app_path }}/{{ app_dir }}/{{ scrips_dir }}"
-        patterns: "*.sql"
-      register: files_sql
+        patterns: "*.js"
+      register: files_mongo
       
-    - debug: msg="{{ files_sql.files }}"
+    - debug: msg="{{ files_mongo.files }}"
 
     - name: Execute mysql dump files
-      mysql_db:
-        login_host: "{{ db_host }}"
-        login_password: "{{ db_pass }}"
-        login_user: "{{ db_user }}"
-        login_port: "{{ db_port }}"
-        name: "{{ db_name }}"
-        state: import
-        target: "{{ item.path }}"
+      shell: "mongo {{ db_host }}:27017/{{ db_database }}  {{ item.path }}"
+      # shell: "mongo mongodb://{{ db_user }}:{{ db_pass }}@{{ db_host }}/{{ db_database }}  {{ item.path }}"
       with_items:
-          - "{{ files_sql.files }}"
-      register: mysql_query
+          - "{{ files_mongo.files }}"
+      register: mongo_query
       #when: cloned.changed
 
 
@@ -74,7 +68,7 @@
     - debug: msg="{{ GIT_TAG }}"
     - debug: msg="{{ cloned }}"
     - debug: msg="{{ commits_list }}"
-    - debug: msg="{{ mysql_query }}" 
+    - debug: msg="{{ mongo_query }}" 
         
 
 
