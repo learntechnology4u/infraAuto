@@ -1,31 +1,32 @@
+---
+# - name: 'iquippo-build-creation'
 - hosts: "{{ HOST }}"
   become: true
-  become_user: "admin"
+  become_user: "{{ user }}"
   become_method: su
   gather_facts: true
-  vars:
-    app_path: "{{ app_path }}"
-    app_dir: "{{ app_dir }}"
-    
+  
   tasks:
     - stat:
         path: "{{ app_path }}/{{ app_dir }}"
       register: exist
 
     - name: create "{{ app_path }}/{{ app_dir }}" directory
-      file: dest="{{ app_path }}/{{ app_dir }}" state=directory 
-      #owner= "{{ become_user }}" group= "{{ become_user }}" mode=0700
+      file: dest={{ app_path }}/{{ app_dir }} state=directory 
+      #owner=www-data group=www-data mode=0700
       when: exist.stat.exists != True
-
 
     - git: 
         repo: "{{ project_git_repo }}"
         dest: "{{ app_path }}/{{ app_dir }}"
         version: "{{ GIT_TAG }}"
-        accept_hostkey: yes
         refspec: '+refs/heads/{{ GIT_TAG }}:refs/remotes/origin/{{ GIT_TAG }}'
+        accept_hostkey: yes
         update: yes
         force: true
+      #become: true
+      #become_user: www-data
+      #become_method: su
       when: build_type  == "build" 
       register: cloned
 
@@ -44,22 +45,46 @@
       with_items:
           - "{{ deploy_info.files }}"
       when: build_type  == "revert"
-      
+     
+          
+    - name: Execute the npm install 
+      command: npm install
+      ignore_errors: true
+      args:
+        chdir: "{{ app_path }}/{{ app_dir }}" 
+      register: npm_install
+
+    - name: Execute the bower install 
+      command: "bower install"
+      args:
+        chdir: "{{ app_path }}/{{ app_dir }}" 
+      register: bower_install
+
+    - name: Create the build 
+      command: "grunt build"
+      args:
+        chdir: "{{ app_path }}/{{ app_dir }}" 
+      register: grunt_build
+      become: true
+      become_user: "{{ user }}"
+      become_method: su
 
 
-    - find:
-        paths: "{{ app_path }}/{{ app_dir }}/{{ scrips_dir }}"
-        patterns: "*.sql"
-      register: files_sql
 
-     
-    - name: Execute postgres dump files
-      shell: "psql -U {{ db_user }} -d {{ db_database }} -qAtw -f  {{ item.path }}"
-      with_items:
-          - "{{ files_sql.files }}"
-      register: postgres_sql
-     
-     
+#- hosts: "{{ dbserver }}"
+#  tasks : 
+#    -name: Create application db
+
+    - name: start application with pm2 
+      command: "pm2 start ecosystem.config.js"
+      args:
+        chdir: "{{ app_path }}/{{ app_dir }}/{{ server_dir }}" 
+      register: pm2_restart
+      become: true
+      become_user: "{{ user }}"
+      become_method: su
+
+
     - name: Print complete log list
       command: git log --pretty=oneline "{{ cloned.after }}..{{ cloned.before }}"
       args:
@@ -104,7 +129,11 @@
     - debug: msg="{{ GIT_TAG }}"
     - debug: msg="{{ cloned }}"
     - debug: msg="{{ commits_list }}"
-    - debug: msg="{{ postgres_sql }}" 
+    - debug: msg="{{ npm_install.stdout }}"
+    - debug: msg="{{ npm_install.stderr }}"
+    - debug: msg="{{ bower_install.stdout }}"
+    - debug: msg="{{ bower_install.stderr }}"
+    - debug: msg="{{ pm2_restart.stdout }}"
         
 
 

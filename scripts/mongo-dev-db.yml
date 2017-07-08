@@ -17,9 +17,10 @@
       when: exist.stat.exists != True
 
     - git: 
-        repo: http://atul:Atul9911@199.217.116.19/Vara-Internal/mongo-db-dev.git
+        repo: "{{ project_git_repo }}"
         dest: "{{ app_path }}/{{ app_dir }}"
         version: "{{ GIT_TAG }}"
+        accept_hostkey: yes
         refspec: '+refs/heads/{{ GIT_TAG }}:refs/remotes/origin/{{ GIT_TAG }}'
         update: yes
         force: true

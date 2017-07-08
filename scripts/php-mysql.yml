@@ -25,7 +25,25 @@
         accept_hostkey: yes
         update: yes
         force: true
-      register: cloned 
+      when: build_type  == "build" 
+      register: cloned
+
+    - find:
+        paths: "{{ app_path }}/{{ app_dir }}/.git/deploy_info.yml"
+        patterns: "*.yml"
+      register: deploy_info
+
+    - name: Reverting Changes
+      include_vars:
+        dir: "{{ item.path }}"
+        extensions: ['yml']
+      command: "git reset --hard {{ after }}"
+      args:
+        chdir: "{{ app_path }}/{{ app_dir }}"
+      with_items:
+          - "{{ deploy_info.files }}"
+      when: build_type  == "revert"
+     
           
     
     - name: Print complete log list
@@ -33,6 +51,29 @@
       args:
         chdir: "{{ app_path }}/{{ app_dir }}"
       register: commits_list
+
+    - name: Ensure Deployment file exist
+      copy:
+        content: ""
+        dest: "{{ app_path }}/{{ app_dir }}/.git/deploy_info.yml"
+        force: yes
+        mode: 0666
+      when: 
+        - build_type  == "build" 
+        - cloned.before != cloned.after
+
+  
+    - name: Save Deployment Info
+      lineinfile:
+        dest: "{{ app_path }}/{{ app_dir }}/.git/deploy_info.yml"
+        line: "{{ item.line }}"
+      with_items:
+        - {line: 'before: {{ cloned.before }}'}
+        - {line: 'after:  {{ cloned.after }}'}
+      when: 
+        - build_type  == "build" 
+        - cloned.before != cloned.after
+
   
     - mail:
         host: smtp.gmail.com

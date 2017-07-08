@@ -1,22 +1,17 @@
 - hosts: "{{ HOST }}"
   become: true
-  become_user: "admin"
+  become_user: "{{ become_user }}"
   become_method: su
   gather_facts: true
-  vars:
-    app_path: "{{ app_path }}"
-    app_dir: "{{ app_dir }}"
-    
+  
   tasks:
     - stat:
-        path: "{{ app_path }}/{{ app_dir }}"
+        path: "{{ app_path }}/{{ app_dir }}}"
       register: exist
 
     - name: create "{{ app_path }}/{{ app_dir }}" directory
       file: dest="{{ app_path }}/{{ app_dir }}" state=directory 
-      #owner= "{{ become_user }}" group= "{{ become_user }}" mode=0700
       when: exist.stat.exists != True
-
 
     - git: 
         repo: "{{ project_git_repo }}"
@@ -44,22 +39,36 @@
       with_items:
           - "{{ deploy_info.files }}"
       when: build_type  == "revert"
-      
-
+     
+    
+    #- name: Install python dependency
+    #  command: easy_install MySQL-python
+    #  become: true
+    #  become_user: "{{ become_user }}"
+    #   become_method: su
 
     - find:
         paths: "{{ app_path }}/{{ app_dir }}/{{ scrips_dir }}"
         patterns: "*.sql"
       register: files_sql
+      
+    - debug: msg="{{ files_sql.files }}"
 
-     
-    - name: Execute postgres dump files
-      shell: "psql -U {{ db_user }} -d {{ db_database }} -qAtw -f  {{ item.path }}"
+    - name: Execute mysql dump files
+      mysql_db:
+        login_host: "{{ db_host }}"
+        login_password: "{{ db_pass }}"
+        login_user: "{{ db_user }}"
+        login_port: "{{ db_port }}"
+        name: "{{ db_name }}"
+        state: import
+        target: "{{ item.path }}"
       with_items:
           - "{{ files_sql.files }}"
-      register: postgres_sql
-     
-     
+      register: mysql_query
+      #when: cloned.changed
+
+
     - name: Print complete log list
       command: git log --pretty=oneline "{{ cloned.after }}..{{ cloned.before }}"
       args:
@@ -104,7 +113,7 @@
     - debug: msg="{{ GIT_TAG }}"
     - debug: msg="{{ cloned }}"
     - debug: msg="{{ commits_list }}"
-    - debug: msg="{{ postgres_sql }}" 
+    - debug: msg="{{ mysql_query }}" 
         
 
 
