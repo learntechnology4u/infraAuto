@@ -67,7 +67,6 @@
         chdir: "{{ app_path }}/{{ app_dir }}"
       when: 
         - build_type  == "build" 
-        - cloned.before != cloned.after
       register: commits_list
 
     - name: Ensure Deployment file exist
@@ -78,7 +77,7 @@
         mode: 0666
       when: 
         - build_type  == "build" 
-        - cloned.before != cloned.after
+        
 
     - name: Save Deployment Info
       lineinfile:
@@ -88,8 +87,7 @@
         - {line: '{{ cloned.before }}'}
       when: 
         - build_type  == "build" 
-        - cloned.before != cloned.after
-
+        
 
     - mail:
         host: smtp.gmail.com
