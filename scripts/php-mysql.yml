@@ -22,6 +22,7 @@
         dest: "{{ app_path }}/{{ app_dir }}"
         version: "{{ GIT_TAG }}"
         refspec: '+refs/heads/{{ GIT_TAG }}:refs/remotes/origin/{{ GIT_TAG }}'
+        accept_hostkey: yes
         update: yes
         force: true
       register: cloned 
