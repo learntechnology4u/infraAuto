@@ -36,14 +36,14 @@
       register: deploy_info
 
     - name: Reverting Changes
-      include_vars:
-        dir: "{{ item.path }}"
-        extensions: ['yml']
-      command: "git reset --hard {{ after }}"
+      #include_vars:
+      #  dir: "{{ item.path }}"
+      #  extensions: ['yml']
+      command: "git reset --hard {{ GIT_TAG }}"
       args:
         chdir: "{{ app_path }}/{{ app_dir }}"
-      with_items:
-          - "{{ deploy_info.files }}"
+      #with_items:
+      #    - "{{ deploy_info.files }}"
       when: build_type  == "revert"
      
           
