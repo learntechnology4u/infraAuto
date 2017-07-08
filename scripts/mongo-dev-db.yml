@@ -3,13 +3,10 @@
   become_user: "{{ become_user }}"
   become_method: su
   gather_facts: true
-  #vars:
-  #  app_path: sahaj-sql
-  #  app_dir: "{{ app_dir }}"
-    
+  
   tasks:
     - stat:
-        path: "{{ app_path }}/{{ app_dir }}}"
+        path: "{{ app_path }}/{{ app_dir }}"
       register: exist
 
     - name: create "{{ app_path }}/{{ app_dir }}" directory
@@ -27,30 +24,24 @@
       when: build_type  == "build" 
       register: cloned
 
-    - find:
-        paths: "{{ app_path }}/{{ app_dir }}/.git/deploy_info.yml"
-        patterns: "*.yml"
+    - stat:
+        path: "{{ app_path }}/{{ app_dir }}/.git/deploy_info.txt"
+      register: deploy_exist
+
+    - name: Find out what the remote machine's mounts are
+      slurp:
+        src: "{{ app_path }}/{{ app_dir }}/.git/deploy_info.txt"
+      when: deploy_exist.stat.islnk is defined
       register: deploy_info
 
     - name: Reverting Changes
-      #include_vars:
-      #  dir: "{{ item.path }}"
-      #  extensions: ['yml']
-      command: "git reset --hard {{ GIT_TAG }}"
+      command: "git reset --hard {{ deploy_info.content | b64decode }}"
       args:
         chdir: "{{ app_path }}/{{ app_dir }}"
-      #with_items:
-      #    - "{{ deploy_info.files }}"
-      when: build_type  == "revert"
+      when: 
+        - build_type  == "revert"
+        - deploy_exist.stat.islnk is defined
     
-    #- name: Install python dependency
-    #  command: easy_install MySQL-python
-    #  become: true
-    #  become_user: "{{ become_user }}"
-    #   become_method: su
-
-
-
     - find:
         paths: "{{ app_path }}/{{ app_dir }}/{{ scrips_dir }}"
         patterns: "*.js"
@@ -64,60 +55,37 @@
       with_items:
           - "{{ files_mongo.files }}"
       register: mongo_query
-      #when: cloned.changed
-
+      when: cloned.changed
 
     - name: Print complete log list
       command: git log --pretty=oneline "{{ cloned.after }}..{{ cloned.before }}"
       args:
         chdir: "{{ app_path }}/{{ app_dir }}"
+      when: 
+        - build_type  == "build" 
+        - cloned.before != cloned.after
       register: commits_list
 
     - name: Ensure Deployment file exist
       copy:
         content: ""
-        dest: "{{ app_path }}/{{ app_dir }}/.git/deploy_info.yml"
+        dest: "{{ app_path }}/{{ app_dir }}/.git/deploy_info.txt"
         force: yes
         mode: 0666
       when: 
         - build_type  == "build" 
         - cloned.before != cloned.after
 
-  
     - name: Save Deployment Info
       lineinfile:
-        dest: "{{ app_path }}/{{ app_dir }}/.git/deploy_info.yml"
+        dest: "{{ app_path }}/{{ app_dir }}/.git/deploy_info.txt"
         line: "{{ item.line }}"
       with_items:
-        - {line: 'before: {{ cloned.before }}'}
-        - {line: 'after:  {{ cloned.after }}'}
+        - {line: '{{ cloned.before }}'}
       when: 
         - build_type  == "build" 
         - cloned.before != cloned.after
 
-
-    #- name: get git version
-    #  shell: git rev-parse HEAD
-    #  args:
-    #    chdir: "{{ app_path }}/{{ app_dir }}"
-    #  register: git_version
-
-    #- copy: content="{{ git_version }}" dest=../vars/mongo-db-dev/git_info.json
-    #  delegate_to: localhost
-
-    #- name: store it
-    #  lineinfile:
-    #    dest: "{{ item }}"
-    #    line: "last_git_version: {{ git_version.stdout }}"
-    #  #command: "echo last_git_version: {{ git_version.stdout }} > {{ item }}"
-    #  with_fileglob:
-    #    "backup/*"
-    #  delegate_to: localhost
-    #  register: file_write
-    #  become_user: root
-    #  become: true
-    #  become_method: su
-    # - debug: msg="{{ file_write }}"
 
     - mail:
         host: smtp.gmail.com
@@ -128,14 +96,37 @@
         to: Atul Agrawal <atul.agrawal@varaunited.com>
         subject: Deployment Status
         body: 'Your deployment has been successfully done.Commits Deployed List<p>{{ commits_list.stdout_lines }}</p>'
+      when: 
+        - build_type  == "build" 
+      delegate_to: "{{ HOST }}"
+
+    - mail:
+        host: smtp.gmail.com
+        port: 465
+        username: atul.agrawal@varaunited.com
+        password: Atul@9911
+        from: Atul Agrawal <atul.agrawal@varaunited.com>
+        to: Atul Agrawal <atul.agrawal@varaunited.com>
+        subject: Deployment Status
+        body: 'Your changes has been reverted'
+      when: 
+        - build_type  == "revert" 
       delegate_to: "{{ HOST }}"
 
 
 
     - debug: msg="{{ commits_list.stdout_lines }}"
+      when: 
+        - build_type  == "build" 
     - debug: msg="{{ GIT_TAG }}"
+      when: 
+        - build_type  == "build" 
     - debug: msg="{{ cloned }}"
+      when: 
+        - build_type  == "build" 
     - debug: msg="{{ commits_list }}"
+      when: 
+        - build_type  == "build" 
     - debug: msg="{{ mongo_query }}" 
         
 
