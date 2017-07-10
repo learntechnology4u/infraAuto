@@ -37,10 +37,18 @@
       become: true
       become_user: root
 
-    - name: Install gcc 
-      yum: name=gcc state=installed
+    - file:
+        path: /data/db
+        state: directory
+        mode: 0777
+
+    - name: Install gcc/build tools 
+      yum: name={{ item }} state=installed
       become: true
       become_user: root
+      with_items:
+        - gcc
+        - "@Development tools"
 
     
     - name: Node.js | Checking installed version of node.js
@@ -80,6 +88,12 @@
       ignore_errors: true
       become: true
       become_user: root
+
+    - name: Making node/npm available globally
+      command: "sudo ln -s \"$(which {{ item }})\" /usr/bin/{{ item }}" 
+      with_items:
+        - node
+        - npm
     
     - name: Node.js | Install bower and gulp globally
       command: "/usr/local/bin/npm install --global {{ item }}"
@@ -88,7 +102,7 @@
         - grunt-cli
         - pm2    
       become: true
-      become_user: root
+      become_user: root 
 
     #- name: Install nginx web server
     #  yum: name=nginx state=installed update_cache=true
