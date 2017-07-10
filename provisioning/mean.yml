@@ -104,6 +104,13 @@
       become: true
       become_user: root 
 
+    - name: Making bower/grunt/pm2 available globally
+      command: "sudo ln -s \"$(which {{ item }})\" /usr/bin/{{ item }}" 
+      with_items:
+        - bower
+        - grunt
+        - pm2
+
     #- name: Install nginx web server
     #  yum: name=nginx state=installed update_cache=true
     #  notify:
