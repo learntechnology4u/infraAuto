@@ -55,7 +55,7 @@
       with_items:
           - "{{ files_mongo.files }}"
       register: mongo_query
-      when: cloned.changed
+      #when: cloned.changed
 
     - name: Print complete log list
       command: git log --pretty=oneline "{{ cloned.after }}..{{ cloned.before }}"
