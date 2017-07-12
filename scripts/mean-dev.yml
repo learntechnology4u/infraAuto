@@ -66,9 +66,7 @@
       args:
         chdir: "{{ app_path }}/{{ app_dir }}" 
       register: grunt_build
-      become: true
-      become_user: "{{ become_user }}"
-      become_method: su
+      
 
 
 
@@ -81,9 +79,7 @@
       args:
         chdir: "{{ app_path }}/{{ app_dir }}/{{ server_dir }}" 
       register: pm2_restart
-      become: true
-      become_user: "{{ become_user }}"
-      become_method: su
+      
 
 
     - name: Print complete log list
