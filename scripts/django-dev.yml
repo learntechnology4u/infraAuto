@@ -71,7 +71,7 @@
                      app_path={{ app_path }}/{{ app_dir }}
                      virtualenv={{ virtualenv_dir }}
                      settings={{ django_settings }}
-                     chdir={{ app_path }}/{{ app_dir }}
+                     #chdir={{ app_path }}/{{ app_dir }}
       
     #- name: Django syncdb
     #  django_manage: command=syncdb
