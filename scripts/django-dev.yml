@@ -6,7 +6,7 @@
   become_method: su
   gather_facts: true
   vars:
-    virtualenv_dir: /home/"{{ become_user }}"/python-env
+    virtualenv_dir: /home/"{{ become_user }}"/python-env/bin
     requirements_file: /home/"{{ become_user }}"/requirements.txt
   
   tasks:
