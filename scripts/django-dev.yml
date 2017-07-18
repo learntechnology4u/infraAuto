@@ -84,12 +84,12 @@
                      virtualenv={{ virtualenv_dir }}
                      settings={{ django_settings }}
       
-    - name: Django loaddata
-      django_manage: command=loaddata
-                     app_path={{{ app_path }}/{{ app_dir }}
-                     virtualenv={{ virtualenv_dir }}
-                     fixtures={{ fixtures_file }}
-                     settings={{ django_settings }}
+    #- name: Django loaddata
+    #  django_manage: command=loaddata
+    #                 app_path={{{ app_path }}/{{ app_dir }}
+    #                 virtualenv={{ virtualenv_dir }}
+    #                 fixtures={{ fixtures_file }}
+    #                 settings={{ django_settings }}
       
     - name: restart uwsgi service
       shell: "sudo service uwsgi  restart"
