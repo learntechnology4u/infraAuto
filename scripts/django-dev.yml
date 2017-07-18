@@ -162,7 +162,8 @@
     - debug: msg="{{ commits_list }}"
       when: 
         - build_type  == "build"
-    - debug:msg="{{ service_restart }}"
+
+    - debug: msg="{{ service_restart }}"
         
 
 
