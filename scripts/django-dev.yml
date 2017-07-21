@@ -81,7 +81,7 @@
       
     - name: Django migrate
       django_manage: command=migrate
-                     app_path={{ app_path }}/{{ app_dir }}
+                     app_path={{ app_path }}
                      virtualenv={{ virtualenv_dir }}
                      settings={{ django_settings }}
       

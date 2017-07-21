@@ -1,0 +1,53 @@
+---
+# - name: 'iquippo-build-creation'
+- hosts: "{{ HOST }}"
+  gather_facts: false
+    
+  tasks:
+    - win_file:
+        path: "{{ app_path }}"
+        state: directory
+      register: exist
+
+    - win_stat:
+        path: "{{ app_path }}/{{ app_dir }}"
+      register: path
+
+    - debug: msg="{{ path }}" 
+
+    - name: Clone Repository
+      win_shell: "git clone -b {{ GIT_TAG }} {{ project_git_repo }}"
+      args:
+        chdir: "{{ app_path }}"
+      when: path.stat.exists == false
+      register: cloned
+
+    - name: Pull Changes if Repository Exist
+      win_shell: "git pull origin {{ GIT_TAG }}"
+      args:
+        chdir: "{{ app_path }}/{{ app_dir }}"
+      when: path.stat.exists == true
+      register: cloned
+    
+    - name: Create build
+      win_shell: "C:/Windows/Microsoft.NET/Framework/v4.0.30319/MSBuild.exe {{ app_path }}/{{ app_dir }}/{{ app_name }}/{{ proj_file }}.csproj /p:Configuration=Publish /p:OutputPath={{ app_path }}/{{ app_dir }}/Release   /m:3"
+
+
+    - debug: msg="{{ exist }}"
+      when: 
+        - build_type  == "build" 
+
+
+    - debug: msg="{{ cloned }}"
+    
+        
+
+
+
+
+
+
+
+         
+        
+  

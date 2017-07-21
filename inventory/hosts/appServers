@@ -29,11 +29,11 @@ dev-server2
 bharat-connect
 
 [windows-uat-server]
-49.248.246.68
+13.126.127.41
 
 [windows-uat-server:vars]
-ansible_user=varanet
-ansible_password=Varaa1b2c3d4e5root 
+ansible_user=Administrator
+ansible_password=6dg2hCLGbG 
 ansible_port=5985
 ansible_connection=winrm
 ansible_winrm_scheme=http
