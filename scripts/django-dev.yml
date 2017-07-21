@@ -86,7 +86,7 @@
       django_manage: command=migrate
                      app_path={{ app_path }}/{{ app_dir }}
                      virtualenv={{ virtualenv_dir }}
-                     settings={{ django_settings }}
+                     #settings={{ django_settings }}
       
     #- name: Django loaddata
     #  django_manage: command=loaddata
