@@ -68,7 +68,7 @@
 
     - name: Django collectstatic
       django_manage: command=collectstatic
-                     app_path={{ app_path }}/{{ app_dir }}
+                     app_path={{ app_path }}/{{ app_dir }}/{{ app_settings_dir }}
                      virtualenv={{ virtualenv_dir }}
                      settings={{ django_settings }}
                      #chdir={{ app_path }}/{{ app_dir }}
@@ -81,7 +81,7 @@
       
     - name: Django migrate
       django_manage: command=migrate
-                     app_path={{ app_path }}
+                     app_path={{ app_path }}/{{ app_dir }}
                      virtualenv={{ virtualenv_dir }}
                      settings={{ django_settings }}
       
