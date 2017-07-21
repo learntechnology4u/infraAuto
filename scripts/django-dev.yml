@@ -70,7 +70,7 @@
       django_manage: command=collectstatic
                      app_path={{ app_path }}/{{ app_dir }}
                      virtualenv={{ virtualenv_dir }}
-                     settings={{ app_settings_dir }}/{{ django_settings }}
+                     settings={{ app_path }}/{{ app_dir }}/{{ app_settings_dir }}/{{ django_settings }}
                      #chdir={{ app_path }}/{{ app_dir }}
       
     #- name: Django syncdb
