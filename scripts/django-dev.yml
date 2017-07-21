@@ -66,6 +66,9 @@
       command: mkdir {{ app_path }}/{{ app_dir }}/static
       when: static_dir.stat.isdir is not defined
 
+    - name: Changing permission of "manage.py", adding "+x"
+      file: dest={{ app_path }}/{{ app_dir }}/manage.py mode=a+x
+
     - name: Django collectstatic
       django_manage: command=collectstatic
                      app_path={{ app_path }}/{{ app_dir }}
