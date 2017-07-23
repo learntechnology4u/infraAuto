@@ -72,7 +72,7 @@
         - build_type  == "revert"
         - deploy_exist.stat.islnk is defined
 
-    - find:
+    - win_find:
         paths: "{{ app_path }}/{{ app_dir }}/{{ scrips_dir }}"
         patterns: "*.sql"
       register: files_sql
