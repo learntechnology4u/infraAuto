@@ -145,7 +145,7 @@
         body: 'Your deployment has been successfully done.'
       when: 
         - build_type  == "build" 
-      delegate_to: "{{ HOST }}"
+      delegate_to: localhost
 
     - mail:
         host: smtp.gmail.com
@@ -158,7 +158,7 @@
         body: 'Your changes has been reverted'
       when: 
         - build_type  == "revert" 
-      delegate_to: "{{ HOST }}"
+      delegate_to: localhost
     
     - debug: msg="{{ cloned }}"
     #- debug: msg="{{ commits_list }}"
