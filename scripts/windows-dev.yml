@@ -105,6 +105,7 @@
         - build_type  == "build"   
         - path.stat.exists == true
         - commit_after.stdout != commit_before.stdout
+
       register: commits_list
 
     - name: Ensure Deployment file exist
@@ -141,10 +142,9 @@
         from: Atul Agrawal <atul.agrawal@varaunited.com>
         to: Atul Agrawal <atul.agrawal@varaunited.com>
         subject: Deployment Status
-        body: 'Your deployment has been successfully done.Commits Deployed List<p>{{ commits_list.stdout_lines }}</p>'
+        body: 'Your deployment has been successfully done.'
       when: 
         - build_type  == "build" 
-        - commits_list.skipped == false
       delegate_to: "{{ HOST }}"
 
     - mail:
