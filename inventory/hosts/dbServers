@@ -6,3 +6,15 @@ local ansible_ssh_host=127.0.0.1 ansible_connection=local
 
 [localhost]
 local
+
+[windows-azure]
+13.82.109.51
+
+
+[windows-azure:vars]
+ansible_user=atul
+ansible_password=Atul@9911473361
+ansible_port=5985
+ansible_connection=winrm
+ansible_winrm_scheme=http
+ansible_winrm_server_cert_validation=ignore
