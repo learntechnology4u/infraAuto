@@ -88,25 +88,25 @@
         chdir: "{{ app_path }}/{{ app_dir }}"
       register: commit_after
 
-    - name: Print complete log list if not  deploying first time
-      win_shell: "git log --pretty=oneline "
-      args:
-        chdir: "{{ app_path }}/{{ app_dir }}"
-      when: 
-        - build_type  == "build" 
-        - path.stat.exists == false
-      register: commits_list
+    #- name: Print complete log list if not  deploying first time
+    #  win_shell: "git log --pretty=oneline "
+    #  args:
+    #    chdir: "{{ app_path }}/{{ app_dir }}"
+    #  when: 
+    #    - build_type  == "build" 
+    #    - path.stat.exists == false
+    #  register: commits_list
 
-    - name: Print complete log list if not deploying first time
-      win_shell: git log --pretty=oneline "{{ commit_after.stdout }}..{{ commit_before.stdout }}"
-      args:
-        chdir: "{{ app_path }}/{{ app_dir }}"
-      when: 
-        - build_type  == "build"   
-        - path.stat.exists == true
-        - commit_after.stdout != commit_before.stdout
+    #- name: Print complete log list if not deploying first time
+    #  win_shell: git log --pretty=oneline "{{ commit_after.stdout }}..{{ commit_before.stdout }}"
+    #  args:
+    #    chdir: "{{ app_path }}/{{ app_dir }}"
+    #  when: 
+    #    - build_type  == "build"   
+    #    - path.stat.exists == true
+    #    - commit_after.stdout != commit_before.stdout
 
-      register: commits_list
+    #  register: commits_list
 
     - name: Ensure Deployment file exist
       win_file:
@@ -132,7 +132,7 @@
         - deploy_exist.stat.exists == true
         - build_type  == "build" 
 
-    - debug: msg="{{ commits_list }}"
+    #- debug: msg="{{ commits_list }}"
 
     - mail:
         host: smtp.gmail.com
@@ -161,10 +161,10 @@
       delegate_to: "{{ HOST }}"
     
     - debug: msg="{{ cloned }}"
-    - debug: msg="{{ commits_list }}"
-      when: 
-        - build_type  == "build" 
-        - commits_list is defined
+    #- debug: msg="{{ commits_list }}"
+    #  when: 
+    #    - build_type  == "build" 
+    #    - commits_list is defined
 
     - debug: msg="{{ deploy_info }}"
     - debug: msg="{{ exist }}"
