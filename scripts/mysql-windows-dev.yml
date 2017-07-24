@@ -76,22 +76,18 @@
         paths: "{{ app_path }}/{{ app_dir }}/{{ scrips_dir }}"
         patterns: "*.sql"
       register: files_sql
+
+    - debug: msg="{{ files_sql }}"
       
 
     - name: Execute mysql dump files
-      win_shell: "C:\Program Files\MySQL\MySQL Server 5.7\\bin\\mysql.exe -h{{ db_host }} -u{{ db_user }} -p{{ db_pass }} --port={{ db_port}} {{ db_database}} < {{ item.path }}"
-      #mysql_db:
-      #  login_host: "{{ db_host }}"
-      #  login_password: "{{ db_pass }}"
-      #  login_user: "{{ db_user }}"
-      #  login_port: "{{ db_port }}"
-      #  name: "{{ db_database }}"
-      #  state: import
-      #  target: "{{ item.path }}"
+      win_shell: "cmd /c --% mysql -h {{ db_host }} -u{{ db_user }} -p{{ db_pass }} -P{{ db_port }}   {{ db_database }} < {{ item.path }}"
       with_items:
           - "{{ files_sql.files }}"
       register: mysql_query
       #when: cloned.changed
+
+    - debug: msg="{{ mysql_query }}"
 
     - name: Ensure Deployment file exist
       win_file:
