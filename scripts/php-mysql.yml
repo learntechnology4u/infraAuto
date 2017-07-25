@@ -16,6 +16,10 @@
       #owner= "{{ become_user }}" group= "{{ become_user }}" mode=0700
       when: exist.stat.exists != True
 
+    - name: Reseting branch
+      command: "git reset --hard"
+      args:
+        chdir: "{{ app_path }}/{{ app_dir }}"
 
     - git: 
         repo: "{{ project_git_repo }}"
