@@ -18,3 +18,14 @@ ansible_port=5985
 ansible_connection=winrm
 ansible_winrm_scheme=http
 ansible_winrm_server_cert_validation=ignore
+
+[windows-dev-server]
+209.126.105.208
+
+[windows-dev-server:vars]
+ansible_user=Administrator
+ansible_password=Vara4@wDas#5
+ansible_port=5985
+ansible_connection=winrm
+ansible_winrm_scheme=http
+ansible_winrm_server_cert_validation=ignore
