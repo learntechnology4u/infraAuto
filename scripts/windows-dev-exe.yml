@@ -75,7 +75,7 @@
         - deploy_exist.stat.islnk is defined
 
     - name: Create build
-      win_shell: "C:/Windows/Microsoft.NET/Framework/v4.0.30319/MSBuild.exe {{ app_path }}/{{ app_dir }}/{{ app_name }}/{{ proj_file }}.csproj /t:Clean /t:OutputAssembly={{ app_path }}/{{app_dir}}/Release/{{ app_name }}.exe /p:OutputPath={{ app_path }}/{{app_dir}}/Release/{{ app_name }}.exe /p:Platform=x64   /m:3"
+      win_shell: "C:/Windows/Microsoft.NET/Framework/v4.0.30319/MSBuild.exe {{ app_path }}/{{ app_dir }}/{{ app_name }}/{{ proj_file }}.csproj /t:Build /p:Configuration=Release  /t:OutputAssembly={{ app_path }}/{{app_dir}}/Release/{{ app_name }}.exe /p:OutputPath={{ app_path }}/{{app_dir}}/Release/{{ app_name }}.exe /p:Platform=x64   /m:3"
 
     
     #- name: Restart IIS Website
