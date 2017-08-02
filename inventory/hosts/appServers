@@ -49,7 +49,7 @@ ansible_winrm_server_cert_validation=ignore
 
 [windows-dev-server:vars]
 ansible_user=Administrator
-ansible_password=Vara4@wDas#5
+ansible_password=Vara@roota1b2c3d4e5
 ansible_port=5985
 ansible_connection=winrm
 ansible_winrm_scheme=http
