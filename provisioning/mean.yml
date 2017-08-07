@@ -1,7 +1,5 @@
 ---
 - hosts: "{{ HOST }}"
-  vars:
-    ansible_sudo_pass: "{{ sudo_pass }}"
     
   tasks:
     - name: Include variables
@@ -89,14 +87,16 @@
       become: true
       become_user: root
 
+    
+
     - name: Making node/npm available globally
-      command: "sudo ln -s \"$(which {{ item }})\" /usr/bin/{{ item }}" 
+      shell: "sudo ln -s $(which {{ item }}) /usr/bin/" 
       with_items:
         - node
-        - npm
+       - npm
     
     - name: Node.js | Install bower and gulp globally
-      command: "/usr/local/bin/npm install --global {{ item }}"
+      shell: "/usr/local/bin/npm install --global {{ item }}"
       with_items:
         - bower
         - grunt-cli
@@ -105,7 +105,7 @@
       become_user: root 
 
     - name: Making bower/grunt/pm2 available globally
-      command: "sudo ln -s \"$(which {{ item }})\" /usr/bin/{{ item }}" 
+      shell: "sudo ln -s $(which {{ item }}) /usr/bin/" 
       with_items:
         - bower
         - grunt

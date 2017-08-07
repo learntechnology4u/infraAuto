@@ -10,6 +10,10 @@ dev-server1 ansible_ssh_host=69.64.33.82 ansible_connection=ssh ansible_user=adm
 
 dev-server2 ansible_ssh_host=69.64.61.230 ansible_connection=ssh ansible_user=admin  
 
+iquippo-uat1 ansible_ssh_host=172.31.100.166 ansible_connection=ssh ansible_user=ec2-user
+
+iquippo-uat2 ansible_ssh_host=172.31.100.140 ansible_connection=ssh ansible_user=ec2-user
+
 
 	
 
@@ -64,3 +68,10 @@ ansible_port=5985
 ansible_connection=winrm
 ansible_winrm_scheme=http
 ansible_winrm_server_cert_validation=ignore
+
+[iquippo-uat]
+iquippo-uat1
+iquippo-uat2
+
+
+
