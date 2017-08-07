@@ -93,7 +93,7 @@
       shell: "sudo ln -s $(which {{ item }}) /usr/bin/" 
       with_items:
         - node
-       - npm
+        - npm
     
     - name: Node.js | Install bower and gulp globally
       shell: "/usr/local/bin/npm install --global {{ item }}"
