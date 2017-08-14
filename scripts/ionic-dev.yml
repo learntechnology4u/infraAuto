@@ -73,6 +73,8 @@
 
     - name: Updating platform
       command: ionic platform update android
+      args:
+        chdir: "{{ app_path }}/{{ app_dir }}" 
 
     - name: Create the build 
       command: "ionic cordova build android --interactive --prod --release"
