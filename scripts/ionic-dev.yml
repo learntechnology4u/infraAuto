@@ -65,16 +65,17 @@
       command: "npm install --save-dev --save-exact {{ item }}"
       with_items:
         - "ionic@latest"
-        - "ionic-cli@latest"
         - "@ionic/cli-plugin-gulp@latest"
         - "@ionic/cli-plugin-ionic1@latest"
         - "@ionic/cli-plugin-cordova@latest"
+      args:
+        chdir: "{{ app_path }}/{{ app_dir }}" 
 
     - name: Updating platform
       command: ionic platform update android
 
     - name: Create the build 
-      command: "ionic cordova build android --prod --release"
+      command: "ionic cordova build android --interactive --prod --release"
       args:
         chdir: "{{ app_path }}/{{ app_dir }}" 
       register: ionic_build
