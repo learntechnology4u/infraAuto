@@ -80,7 +80,7 @@
 
 
     - name: Create the build 
-      command: "/usr/local/bin/ionic cordova build android --interactive --prod --release"
+      command: "/usr/local/bin/ionic cordova build android --interactive --prod --release --verbose"
       args:
         chdir: "{{ app_path }}/{{ app_dir }}" 
       register: ionic_build
