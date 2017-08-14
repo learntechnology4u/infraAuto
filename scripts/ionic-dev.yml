@@ -71,16 +71,21 @@
       args:
         chdir: "{{ app_path }}/{{ app_dir }}" 
 
-    #- name: Updating platform
-    #  command: ionic platform update android
-    #  args:
-    #    chdir: "{{ app_path }}/{{ app_dir }}" 
+    - name: Updating platform
+      command: ionic platform update android
+      args:
+        chdir: "{{ app_path }}/{{ app_dir }}" 
+      become: true
+      become_user: "{{ become_user }}"
+
 
     - name: Create the build 
       command: "ionic cordova build android --interactive --prod --release"
       args:
         chdir: "{{ app_path }}/{{ app_dir }}" 
       register: ionic_build
+      become: true
+      become_user: "{{ become_user }}"
       
 
     - name: Print complete log list
