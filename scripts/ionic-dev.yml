@@ -72,7 +72,7 @@
         chdir: "{{ app_path }}/{{ app_dir }}" 
 
     - name: Updating platform
-      command: "ionic platform update android"
+      command: "/usr/local/lib/node_modules/ionic/bin/ionic platform update android"
       args:
         chdir: "{{ app_path }}/{{ app_dir }}" 
       become: true
@@ -80,7 +80,7 @@
 
 
     - name: Create the build 
-      command: "ionic cordova build android --interactive --prod --release --verbose"
+      command: "/usr/local/lib/node_modules/ionic/bin/ionic cordova build android --interactive --prod --release --verbose"
       args:
         chdir: "{{ app_path }}/{{ app_dir }}" 
       register: ionic_build
