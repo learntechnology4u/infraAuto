@@ -87,10 +87,10 @@
       become_user: "{{ become_user }}"
 
     - name: Signing APK
-      command: " apksigner  sign --ks  {{ keystore }} android-release-unsigned.apk"
+      command: " apksigner --ks-pass pass:{{ keystore_pass }} --key-pass pass:{{ key_pass }}  sign --ks  {{ keystore }} android-release-unsigned.apk"
       args:
         chdir: "{{ app_path }}/{{ app_dir }}/platforms/android/build/outputs/apk"
-      
+
 
     - name: Minimizing APK 
       command: "zipalign -v {{ version_number }} android-release-unsigned.apk {{ app_name }}"   
