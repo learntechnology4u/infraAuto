@@ -79,7 +79,7 @@
       become_user: "{{ become_user }}"
 
     - name: Create the build 
-      command: "/usr/local/lib/node_modules/ionic/bin/ionic cordova build android --interactive --prod --release --verbose"
+      command: "ionic cordova build android --interactive --prod --release --verbose"
       args:
         chdir: "{{ app_path }}/{{ app_dir }}" 
       register: ionic_build
