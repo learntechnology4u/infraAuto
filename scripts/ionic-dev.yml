@@ -95,7 +95,13 @@
     - name: Minimizing APK 
       command: "zipalign -v {{ version_number }} android-release-unsigned.apk {{ app_name }}"  
       args:
-        chdir: "{{ app_path }}/{{ app_dir }}/platforms/android/build/outputs/apk" 
+        chdir: "{{ app_path }}/{{ app_dir }}/platforms/android/build/outputs/apk"
+
+    - name: Deleting Existing apk from workspace
+      command: "sudo rm -rf {{ job_home }}/platforms"
+
+    - name: Moving newly build apk to workspace
+      command: "sudo mv platforms {{ job_home }}"
 
     - name: Print complete log list
       command: git log --pretty=oneline "{{ cloned.after }}..{{ cloned.before }}"
