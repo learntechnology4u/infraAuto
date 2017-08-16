@@ -87,7 +87,7 @@
       become_user: "{{ become_user }}"
 
     - name: Signing APK
-      command: " apksigner --ks-pass pass:{{ keystore_pass }} --key-pass pass:{{ key_pass }}  sign --ks  {{ keystore }} android-release-unsigned.apk"
+      command: " apksigner sign --ks  {{ keystore }} --ks-pass pass:{{ keystore_pass }} --key-pass pass:{{ key_pass }}   android-release-unsigned.apk"
       args:
         chdir: "{{ app_path }}/{{ app_dir }}/platforms/android/build/outputs/apk"
 
