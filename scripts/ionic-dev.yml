@@ -93,7 +93,9 @@
 
 
     - name: Minimizing APK 
-      command: "zipalign -v {{ version_number }} android-release-unsigned.apk {{ app_name }}"   
+      command: "zipalign -v {{ version_number }} android-release-unsigned.apk {{ app_name }}"  
+      args:
+        chdir: "{{ app_path }}/{{ app_dir }}/platforms/android/build/outputs/apk" 
 
     - name: Print complete log list
       command: git log --pretty=oneline "{{ cloned.after }}..{{ cloned.before }}"
