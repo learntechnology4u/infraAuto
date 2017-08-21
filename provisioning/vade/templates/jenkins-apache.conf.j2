@@ -1,15 +1,14 @@
 <Virtualhost *:80>
-    ServerName        my.jenkins.id
+    ServerName        13.126.203.235
     ProxyRequests     Off
     ProxyPreserveHost On
     AllowEncodedSlashes NoDecode
  
     <Proxy http://localhost:8080/*>
-      Order deny,allow
-      Allow from all
+      Require all granted
     </Proxy>
  
     ProxyPass         /  http://localhost:8080/ nocanon
     ProxyPassReverse  /  http://localhost:8080/
-    ProxyPassReverse  /  http://my.jenkins.id/
+    ProxyPassReverse  /  13.126.203.235
 </Virtualhost>
