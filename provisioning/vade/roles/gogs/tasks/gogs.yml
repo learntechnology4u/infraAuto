@@ -143,10 +143,10 @@
   become: true
   become_user: root
 
-- name: Allow mod_proxy
-  command: ' /usr/sbin/setsebool -P httpd_can_network_connect 1'
-  become: true
-  become_user: root
+#- name: Allow mod_proxy
+#  command: ' /usr/sbin/setsebool -P httpd_can_network_connect 1'
+#  become: true
+#  become_user: root
 
 - name: Restart apache service
   command: service httpd restart
