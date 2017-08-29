@@ -6,5 +6,5 @@
   go_project_dir: goprojects
   go_home: "{{ ansible_env.HOME }}"
   gogs_home: "/home/git"
-  gogs_project_directory: "git.varadev.com"
+  gogs_project_directory: "git.varauat.com"
   gogs_repo: github.com/gogits/gogs
