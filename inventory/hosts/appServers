@@ -2,7 +2,7 @@ local ansible_ssh_host=127.0.0.1 ansible_connection=local
 
 staging ansible_ssh_host=54.179.148.145 ansible_connection=ssh  ansible_user=ubuntu  
 
-vara-uat ansible_ssh_host=199.217.113.145 ansible_connection=ssh ansible_user=admin  ansible_sudo_pass=rootvade#1234
+vara-uat ansible_ssh_host=199.217.113.145 ansible_connection=ssh ansible_user=admin  
 
 bharat-connect ansible_ssh_host=192.168.14.120 ansible_connection=ssh ansible_user=siddhant 
 
