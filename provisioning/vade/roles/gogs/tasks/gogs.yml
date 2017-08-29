@@ -124,12 +124,10 @@
 - name: Start gogs service
   service: 
     name: gogs
-    state: restarted
+    state: started
     enabled:  yes
   become: true
   become_user: root
-
-
 
 - name: copy gogs.conf to the server
   template: src={{ item }} dest=/etc/httpd/sites-available/gogs.conf
