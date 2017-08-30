@@ -108,14 +108,14 @@
 
 
 - name: Create init service
-  template: src={{ item }} dest=/etc/init.d/gogs mode=0751
+  template: src={{ item }} dest=/etc/init.d/gogs mode=0755
   with_fileglob:
     - ../templates/gogs.j2
   become: true
   become_user: root
 
 - name: create gogs.service
-  template: src={{ item }} dest=/etc/systemd/system/gogs.service mode=0644
+  template: src={{ item }} dest=/etc/systemd/system/gogs.service mode=0755
   with_fileglob:
     - ../templates/gogs.service.j2
   become: true
@@ -124,7 +124,7 @@
 - name: Start gogs service
   service: 
     name: gogs
-    state: started
+    state: restarted
     enabled:  yes
   become: true
   become_user: root

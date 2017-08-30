@@ -11,7 +11,7 @@ After=network.target
 ###
 #LimitMEMLOCK=infinity
 #LimitNOFILE=65535
-Type=simple
+Type=forking
 ExecStart=/etc/init.d/gogs start
 ExecStop=/etc/init.d/gogs stop
 ExecReload=/etc/init.d/gogs restart
