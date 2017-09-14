@@ -1,0 +1,7 @@
+---
+  tasks:
+    - include: iquippo.yml
+    tag: 
+      - iquippo
+#
+#    - include: roles/gogs/tasks/main.yml
