@@ -1,20 +1,15 @@
 ---
 
-- name: Include variables
-  include_vars:
-    file: main.yml
-    name: usr_path
-
 - stat:
     path: "{{ app_path }}/{{ app_dir }}"
   register: exist
 
 - name: create "{{ app_path }}/{{ app_dir }}" directory
-  file: dest={{ app_path }}/{{ app_dir }} state=directory 
+  file: dest="{{ app_path }}/{{ app_dir }}" state=directory 
   when: exist.stat.exists != True
 
 - git: 
-    repo: "{{ project_git_repo }}"
+    repo: "git@git.varadev.com:Gururam-Learning/bharatconnect.com.git"
     dest: "{{ app_path }}/{{ app_dir }}"
     version: "{{ GIT_TAG }}"
     refspec: '+refs/heads/{{ GIT_TAG }}:refs/remotes/origin/{{ GIT_TAG }}'
@@ -28,7 +23,7 @@
     path: "{{ app_path }}/{{ app_dir }}/.git/deploy_info.txt"
   register: deploy_exist
 
-- name: Find out revert info
+- name: Find out what the remote machine's mounts are
   slurp:
     src: "{{ app_path }}/{{ app_dir }}/.git/deploy_info.txt"
   when: deploy_exist.stat.islnk is defined
@@ -41,77 +36,13 @@
   when: 
     - build_type  == "revert"
     - deploy_exist.stat.islnk is defined
-
-- name: Install node-gyp locally 
-  command: npm install node-gyp
-  ignore_errors: true
-  args:
-    chdir: "{{ app_path }}/{{ app_dir }}" 
-  register: gyp_install
-
-- name: Install lwip locally 
-  command: npm install lwip
-  ignore_errors: true
-  args:
-    chdir: "{{ app_path }}/{{ app_dir }}" 
-  register: lwip_install
-
-- name: Execute the npm install 
-  command: npm install
-  ignore_errors: true
-  args:
-    chdir: "{{ app_path }}/{{ app_dir }}" 
-  register: npm_install
-
-
-- name: Remove errorneous modules 
-  command: rm -rf {{item }}
-  ignore_errors: true
-  args:
-    chdir: "{{ app_path }}/{{ app_dir }}/node_modules" 
-  with_items:
-    - jpegtran
-    - optipng
-    - gifsicle
-  register: error_remove
-
-- name: Install errorneous modules 
-  command: npm install {{item }}
-  ignore_errors: true
-  args:
-    chdir: "{{ app_path }}/{{ app_dir }}" 
-  with_items:
-    - jpegtran-bin
-    - optipng-bin
-    - gifsicle
-  register: error_install
-
-- name: Execute the bower install 
-  command: "bower install"
-  args:
-    chdir: "{{ app_path }}/{{ app_dir }}" 
-  register: bower_install
-
-- name: Create the build 
-  command: "grunt build"
-  args:
-    chdir: "{{ app_path }}/{{ app_dir }}" 
-  register: grunt_build
-  #environment:
-  #  PATH: "{{ usr_path }}"
-  
-- name: start application with pm2 
-  command: "pm2 start ecosystem.config.js"
-  args:
-    chdir: "{{ app_path }}/{{ app_dir }}/dist/{{ server_dir }}" 
-  register: pm2_restart
-  
+     
 - name: Print complete log list
   command: git log --pretty=oneline "{{ cloned.after }}..{{ cloned.before }}"
   args:
     chdir: "{{ app_path }}/{{ app_dir }}"
   when: 
-    - build_type  == "build" 
+    - build_type  == "build"   
   register: commits_list
 
 - name: Ensure Deployment file exist
@@ -123,6 +54,7 @@
   when: 
     - build_type  == "build" 
     
+
 - name: Save Deployment Info
   lineinfile:
     dest: "{{ app_path }}/{{ app_dir }}/.git/deploy_info.txt"
@@ -134,8 +66,8 @@
     - deploy_exist.stat.islnk is defined
     - cloned.before is defined
     - cloned.after is defined
-    - cloned.before != cloned.after     
-
+    - cloned.before != cloned.after 
+  
 - mail:
     host: smtp.gmail.com
     port: 465
@@ -164,21 +96,16 @@
 
 - debug: msg="{{ commits_list.stdout_lines }}"
   when: 
-    - build_type  == "build"
+    - build_type  == "build" 
 - debug: msg="{{ GIT_TAG }}"
   when: 
-    - build_type  == "build"
+    - build_type  == "build" 
 - debug: msg="{{ cloned }}"
   when: 
-    - build_type  == "build"
+    - build_type  == "build" 
 - debug: msg="{{ commits_list }}"
   when: 
-    - build_type  == "build"
-- debug: msg="{{ npm_install.stdout }}"
-- debug: msg="{{ npm_install.stderr }}"
-- debug: msg="{{ bower_install.stdout }}"
-- debug: msg="{{ bower_install.stderr }}"
-- debug: msg="{{ pm2_restart.stdout }}"
+    - build_type  == "build" 
     
 
 

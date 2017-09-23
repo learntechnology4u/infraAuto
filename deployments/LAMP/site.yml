@@ -1,35 +1,10 @@
 ---
-#- hosts: "{{ HOST }}"
-#  tasks:
-#    - include: roles/jenkins/tasks/main.yml
-#
-#    - include: roles/gogs/tasks/main.yml
 
-- name: Configure and install apache on dev
-  hosts: atul-ec2
+- name: Deploy Application
+  hosts: "{{ host }}"
   roles: 
-    - apache
+    - www
   become: true
-  become_user: root
-  tags: 
-    - apache
+  become_user: www-data
+  tags: [site-deployment,lamp-test]
 
-
-- name: Configure and install jenkins on dev
-  hosts: atul-ec2
-  roles: 
-    - jenkins
-  become: true
-  become_user: root
-  tags: 
-    - jenkins
-
-
-- name: Configure and install jenkins on dev
-  hosts: atul-ec2
-  roles: 
-    - gogs
-  become: true
-  become_user: root
-  tags: 
-    - gogs
