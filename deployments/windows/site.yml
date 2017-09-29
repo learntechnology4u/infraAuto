@@ -1,0 +1,10 @@
+---
+
+- name: Deploy Application
+  hosts: "{{ host }}"
+  roles: 
+    - iis
+  #become: true
+  #become_user: www-data
+  tags: [site-deployment,iis]
+
