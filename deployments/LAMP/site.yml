@@ -8,3 +8,13 @@
   become_user: www-data
   tags: [site-deployment,lamp-test]
 
+
+- name: Deploy Application
+  hosts: "{{ host }}"
+  roles: 
+    - db
+  become: true
+  become_user: www-data
+  tags: [db]
+
+
