@@ -1,3 +1,15 @@
+#---
+#
+#- include: lamp-test.yml
+#  tags: lamp-test
+#
+#- name: Restart Apache Server
+#  include_role: 
+#    name: root
+#    tasks_from: apache-restart.yml
+#  become: true
+#  become_user: root
+
 ---
 
 - include: lamp-test.yml
@@ -9,3 +21,4 @@
     tasks_from: apache-restart.yml
   become: true
   become_user: root
+  
