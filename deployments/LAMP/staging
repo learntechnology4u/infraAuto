@@ -1,9 +1,9 @@
 [VASHIRTP-test]
-Vas ansible_ssh_host=10.1.31.254 ansible_connection=ssh ansible_user=jenkinsUAT
+Vas ansible_ssh_host=10.1.31.254 ansible_connection=ssh ansible_user=root
 
 [Cloud-Server]
-cloud ansible_ssh_host=10.1.31.254 ansible_connection=ssh ansible_user=jenkinsUAT
+cloud ansible_ssh_host=10.1.31.254 ansible_connection=ssh ansible_user=root
 
 [Multi-test]
-DEL ansible_ssh_host=10.1.55.31 ansible_connection=ssh ansible_user=jenkinsUAT
-HYD ansible_ssh_host=10.1.66.31 ansible_connection=ssh ansible_user=jenkinsUAT
+DEL ansible_ssh_host=10.1.55.31 ansible_connection=ssh ansible_user=root
+HYD ansible_ssh_host=10.1.66.31 ansible_connection=ssh ansible_user=root
