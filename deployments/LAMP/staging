@@ -5,9 +5,5 @@ Vas ansible_ssh_host=10.1.31.254 ansible_connection=ssh ansible_user=jenkinsUAT
 cloud ansible_ssh_host=10.1.31.254 ansible_connection=ssh ansible_user=jenkinsUAT
 
 [Multi-test]
-VAS ansible_ssh_host=10.1.31.254 ansible_connection=ssh ansible_user=jenkinsUAT
-AND ansible_ssh_host=10.1.42.19 ansible_connection=ssh ansible_user=jenkinsUAT
-HYD ansible_ssh_host=10.1.66.32 ansible_connection=ssh ansible_user=jenkinsUAT
-HYDO ansible_ssh_host=10.1.66.31 ansible_connection=ssh ansible_user=jenkinsUAT
-VASO ansible_ssh_host=10.1.21.49 ansible_connection=ssh ansible_user=jenkinsUAT
-ANDO ansible_ssh_host=10.1.42.21 ansible_connection=ssh ansible_user=jenkinsUAT
+DEL ansible_ssh_host=10.1.55.31 ansible_connection=ssh ansible_user=jenkinsUAT
+HYD ansible_ssh_host=10.1.66.31 ansible_connection=ssh ansible_user=jenkinsUAT
