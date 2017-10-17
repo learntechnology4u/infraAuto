@@ -22,7 +22,7 @@ iquippo-uat1 ansible_ssh_host=172.31.101.147 ansible_connection=ssh ansible_user
 
 iquippo-uat2 ansible_ssh_host=172.31.101.166 ansible_connection=ssh ansible_user=atul_uat
 
-
+iquippo-dev1 ansible_ssh_host=172.31.100.21 ansible_connection=ssh ansible_user=ec2-user
 	
 [infra]
 vara-infra
@@ -80,8 +80,7 @@ ansible_winrm_scheme=http
 ansible_winrm_server_cert_validation=ignore
 
 [iquippo-prod]
-iquippo-prod1
-iquippo-prod2
+vara-infra
 
 [iquippo-uat]
 iquippo-uat1

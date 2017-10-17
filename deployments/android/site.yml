@@ -1,0 +1,10 @@
+---
+
+- name: Deploy Application
+  hosts: "vara-dev"
+  roles: 
+    - www
+  #become: true
+  #become_user: www-data
+  #tags: [site-deployment,iquippo,mean-test]
+

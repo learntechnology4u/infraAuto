@@ -1,0 +1,2 @@
+[vara-dev]
+vara-infra ansible_ssh_host=69.64.32.198 ansible_connection=ssh ansible_user=admin   
