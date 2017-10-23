@@ -1,7 +1,7 @@
 ---
 
 - name: Deploy Application
-  hosts: "{{ host }}"
+  hosts: "localhost"
   roles: 
     - www
   #become: true
