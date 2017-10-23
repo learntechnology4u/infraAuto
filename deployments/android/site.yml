@@ -1,7 +1,7 @@
 ---
 
 - name: Deploy Application
-  hosts: "vara-dev"
+  hosts: "{{ host }}"
   roles: 
     - www
   #become: true
