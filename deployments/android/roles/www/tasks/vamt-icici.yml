@@ -58,7 +58,7 @@
   become_user: "{{ become_user }}"
 
 - name: Create the build 
-  command: "ionic cordova build android"
+  command: "ionic cordova build android --prod --release --verbose"
   args:
     chdir: "{{ app_path }}/{{ app_dir }}" 
   register: ionic_build
