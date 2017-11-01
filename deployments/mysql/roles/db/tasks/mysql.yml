@@ -1,6 +1,4 @@
 ---
-
-
 - stat:
   path: "{{ app_path }}/{{ app_dir }}}"
 register: exist
