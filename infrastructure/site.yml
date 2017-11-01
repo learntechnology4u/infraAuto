@@ -6,7 +6,7 @@
 #    - include: roles/gogs/tasks/main.yml
 
 - name: Configure and install apache on dev
-  hosts: atul-ec2
+  hosts: "{{ HOST }}"
   roles: 
     - apache
   become: true
@@ -16,7 +16,7 @@
 
 
 - name: Configure and install jenkins on dev
-  hosts: atul-ec2
+  hosts: "{{ HOST }}"
   roles: 
     - jenkins
   become: true
@@ -26,7 +26,7 @@
 
 
 - name: Configure and install jenkins on dev
-  hosts: atul-ec2
+  hosts: "{{ HOST }}"
   roles: 
     - gogs
   become: true
