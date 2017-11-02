@@ -9,7 +9,7 @@
   when: exist.stat.exists != True
 
 - git: 
-    repo: "git@git.varadev.com:Gururam-Learning/bharatconnect.com.git"
+    repo: "{{ project_git_repo }}"
     dest: "{{ app_path }}/{{ app_dir }}"
     version: "{{ GIT_TAG }}"
     refspec: '+refs/heads/{{ GIT_TAG }}:refs/remotes/origin/{{ GIT_TAG }}'
