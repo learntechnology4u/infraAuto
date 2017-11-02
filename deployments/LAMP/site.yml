@@ -26,6 +26,7 @@
   become: true
   # THis will be the user which we will use for deployment..constant 
   become_user: jenkinsUAT
+  become_method:  su
   tags: [site-deployment,lamp-test]
   
   
