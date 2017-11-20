@@ -1,5 +1,5 @@
 <Virtualhost *:80>
-    ServerName        git.varauat.com
+    ServerName        git.varaunited.net
     ProxyRequests     Off
     ProxyPreserveHost On
     AllowEncodedSlashes NoDecode
@@ -10,5 +10,5 @@
  
     ProxyPass         /  http://localhost:8000/ nocanon
     ProxyPassReverse  /  http://localhost:8000/
-    ProxyPassReverse  /  git.varauat.com
+    ProxyPassReverse  /  git.varaunited.net
 </Virtualhost>
