@@ -87,31 +87,31 @@
   
 
 
-- mail:
-    host: smtp.gmail.com
-    port: 465
-    username: atul.agrawal@varaunited.com
-    password: Atul@9911
-    from: Atul Agrawal <atul.agrawal@varaunited.com>
-    to: Atul Agrawal <atul.agrawal@varaunited.com>
-    subject: Deployment Status
-    body: 'Your deployment has been successfully done.Commits Deployed List<p>{{ commits_list.stdout_lines }}</p>'
-  when: 
-    - build_type  == "build" 
-  delegate_to: "{{ HOST }}"
+# - mail:
+#     host: smtp.gmail.com
+#     port: 465
+#     username: atul.agrawal@varaunited.com
+#     password: Atul@9911
+#     from: Atul Agrawal <atul.agrawal@varaunited.com>
+#     to: Atul Agrawal <atul.agrawal@varaunited.com>
+#     subject: Deployment Status
+#     body: 'Your deployment has been successfully done.Commits Deployed List<p>{{ commits_list.stdout_lines }}</p>'
+#   when: 
+#     - build_type  == "build" 
+#   delegate_to: "{{ HOST }}"
 
-- mail:
-    host: smtp.gmail.com
-    port: 465
-    username: atul.agrawal@varaunited.com
-    password: Atul@9911
-    from: Atul Agrawal <atul.agrawal@varaunited.com>
-    to: Atul Agrawal <atul.agrawal@varaunited.com>
-    subject: Deployment Status
-    body: 'Your changes has been reverted'
-  when: 
-    - build_type  == "revert" 
-  delegate_to: "{{ HOST }}"
+# - mail:
+#     host: smtp.gmail.com
+#     port: 465
+#     username: atul.agrawal@varaunited.com
+#     password: Atul@9911
+#     from: Atul Agrawal <atul.agrawal@varaunited.com>
+#     to: Atul Agrawal <atul.agrawal@varaunited.com>
+#     subject: Deployment Status
+#     body: 'Your changes has been reverted'
+#   when: 
+#     - build_type  == "revert" 
+#   delegate_to: "{{ HOST }}"
 
 
 - debug: msg="{{ commits_list.stdout_lines }}"
